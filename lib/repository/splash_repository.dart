@@ -1,4 +1,4 @@
-
+/* 
 import 'package:flutter/material.dart';
 
 import 'package:my_ghmc/data/base_api_client.dart';
@@ -69,3 +69,4 @@ class SplashRepository {
     throw {print("throw")};
   }
 }
+ */

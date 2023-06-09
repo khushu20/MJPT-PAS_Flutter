@@ -1,4 +1,4 @@
-import 'dart:io';
+/* import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -210,3 +210,4 @@ class SplashViewModel with ChangeNotifier {
     //Navigator.pushReplacementNamed(context, AppRoutes.login_view);
   }
 }
+ */

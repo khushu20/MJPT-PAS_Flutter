@@ -1,9 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:my_ghmc/ViewModel/splash_view_model.dart';
-import 'package:my_ghmc/res/TextConstants/stringConstants.dart';
-import 'package:my_ghmc/res/components/CustomAlerts/alert_single_button.dart';
-import 'package:my_ghmc/res/constants/image_constants.dart';
 import 'package:provider/provider.dart';
 
 class SplashView extends StatefulWidget {
@@ -42,7 +38,7 @@ class _SplashView extends State<SplashView> {
   
 
   network() async {
-    var result = await Connectivity().checkConnectivity();
+    /* var result = await Connectivity().checkConnectivity();
     if (result == ConnectivityResult.mobile ||
         result == ConnectivityResult.wifi) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -70,6 +66,6 @@ class _SplashView extends State<SplashView> {
           });
 
       print("Please check internet connection");
-    }
+    } */
   }
 }

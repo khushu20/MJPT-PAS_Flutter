@@ -1,7 +1,5 @@
 import 'package:image_picker/image_picker.dart';
 
-import '../../model/KnowYourPTIN Model/search_PTIN_response.dart';
-
 class AppConstants {
   AppConstants._();
   static bool flag = false;

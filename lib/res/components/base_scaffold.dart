@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../Routes/App_routes.dart';
 import '../constants/image_constants.dart';
-import '../constants/shared_pref_consts.dart';
 
+// ignore: must_be_immutable
 class BaseScaffold extends StatefulWidget {
   BaseScaffold(
       {this.key,
@@ -16,7 +17,6 @@ class BaseScaffold extends StatefulWidget {
       this.color,
       this.extendBodyBehindAppBar,
       this.vis,
-      this.floatingActionButton,
       this.drawerContent,
       this.AppBarvis,
       this.appBarSize, this.backArrowFlag, this.sidebarVis});
@@ -31,7 +31,6 @@ class BaseScaffold extends StatefulWidget {
   final bool? extendBodyBehindAppBar;
   final AppBar? appBar;
   final Widget? endDrawer;
-  final Widget? floatingActionButton;
   final Widget? drawerContent;
   final String? routeName;
   final String? titleName;
@@ -51,11 +50,9 @@ class _BaseScaffoldState extends State<BaseScaffold> {
     });
   }
 
-  var backgroundImage;
   Color? themeColor;
   @override
   Widget build(BuildContext context) {
-    print("color from ppicker $themeColor");
     return Scaffold(
       extendBodyBehindAppBar: widget.extendBodyBehindAppBar ?? false,
       drawer: Visibility(
@@ -66,23 +63,13 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       ),
       key: widget.key,
       //endDrawer: widget.endDrawer,
-      floatingActionButton: widget.floatingActionButton,
       resizeToAvoidBottomInset: widget.resize,
-      
       bottomSheet: widget.vis == true
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppInputText(
-                  text: AppStrings.rights_reserved,
-                  textstyle: AppTextStyles.login_right,
-                ),
-                AppInputText(
-                  text: AppStrings.powered_by,
-                  textstyle: AppTextStyles.login_powered_by,
-                ),
-              ],
-            )
+          ? Image.asset(
+          AssetPath.footer,
+          width: double.infinity,
+          height: 40,
+        )
           : widget.bottomsheet,
       appBar: widget.AppBarvis == true
           ? PreferredSize(
@@ -91,7 +78,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
                 leading: IconButton(
                     onPressed: () {
                       // ProviderForPropertyTax.navigate(context, AppRoutes.dashboard);
-                      widget.backArrowFlag == true ? Navigator.pushNamed(context, AppRoutes.dashboard) 
+                      widget.backArrowFlag == true ? Navigator.pushNamed(context, AppRoutes.LogIn) 
                       :
                       Navigator.pop(context);
                     },
@@ -102,7 +89,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
                 actions: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, AppRoutes.dashboard);
+                        Navigator.pushNamed(context, AppRoutes.LogIn);
                         //ProviderForPropertyTax.navigate(context, AppRoutes.dashboard);
                       },
                       icon: Icon(
@@ -129,7 +116,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(backgroundImage ?? AssetPath.bg_image),
+            image: //SvgPicture.asset(AssetPath.bg),
+            AssetImage(AssetPath.bg_image),
             // AssetImage("assets/zoo_bg_transparent.png"),
             fit: BoxFit.cover,
           ),

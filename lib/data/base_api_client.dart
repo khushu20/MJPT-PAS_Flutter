@@ -1,4 +1,4 @@
-
+/* 
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -7,10 +7,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class baseApiClient {
   late final Dio _client = Dio(
-    BaseOptions(baseUrl: ApiConstants.baseUrlMyGHMC),
+    BaseOptions(/* baseUrl: ApiConstants.baseUrlMyGHMC */),
   );
   late final Dio client = Dio(
-    BaseOptions(baseUrl: ApiConstants.baseUrlPetTypeMyGHMC),
+    BaseOptions(/* baseUrl: ApiConstants.baseUrlPetTypeMyGHMC */),
   );
   /* late final Dio weatherclient = Dio(
     BaseOptions(baseUrl: ApiConstants.weather_Url),
@@ -19,11 +19,11 @@ class baseApiClient {
   late final Dio weatherClient = Dio();
 
   late final Dio clientgetWard = Dio(
-    BaseOptions(baseUrl: ApiConstants.baseUrlPetTypeMyGHMC),
+    BaseOptions(/* baseUrl: ApiConstants.baseUrlPetTypeMyGHMC */),
   );
 
   late final Dio CandDclient = Dio(
-    BaseOptions(baseUrl: ApiConstants.baseUrlCandD),
+    BaseOptions(/* baseUrl: ApiConstants.baseUrlCandD */),
   );
 
   Future<dynamic> getCall(
@@ -126,7 +126,7 @@ class baseApiClient {
   }
   
   Future<Map<String, dynamic>> getForeCastData(String appid1,/* {required Map<String, dynamic> queryParam} */) async {
-    final url =('${ApiConstants.forecast_Url}');
+    final url =(' ${ApiConstants.forecast_Url}');
     final response = await weatherClient.get(url,
     queryParameters: {
       'q':'Hyderabad,India',
@@ -136,3 +136,4 @@ class baseApiClient {
     return response.data;
   }
 }
+ */
