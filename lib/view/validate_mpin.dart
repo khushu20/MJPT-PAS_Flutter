@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mjpt_pas/res/Routes/App_routes.dart';
 import 'package:mjpt_pas/res/components/base_scaffold.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textformfield.dart';
 
-import '../res/Routes/App_routes.dart';
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
 
-class LogIn extends StatelessWidget {
-  LogIn({super.key});
-  final _formKey = GlobalKey<FormState>();
-  FocusScopeNode _node = FocusScopeNode();
-  TextEditingController _username = TextEditingController();
-  TextEditingController _password = TextEditingController();
+class ValidateMPIN extends StatelessWidget {
+  ValidateMPIN({super.key});
+  TextEditingController _mobile = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,20 +71,15 @@ class LogIn extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 30,
                             ),
+                             AppInputText(text: AppStrings.validate_mpin, fontsize: 24,),
                             AppInputTextfield(
-                                texteditingcontroller: _username,
-                                labeltext: AppStrings.UserName,
+                                texteditingcontroller: _mobile,
+                                labeltext: AppStrings.Mobile_Number,
                                 input_type: TextInputType.name),
-                            AppInputTextfield(
-                              texteditingcontroller: _password,
-                              labeltext: AppStrings.Password,
-                              input_type: TextInputType.name,
-                              obsecuretext: true,
-                            ),
                             SizedBox(
-                              height: 20,
+                              height: 40,
                             ),
                             AppInputButtonComponent(
                               buttonText: AppStrings.LOGIN,
@@ -97,20 +89,13 @@ class LogIn extends StatelessWidget {
                               },
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 40,
                             ),
-                            AppInputText(text: AppStrings.OR, fontsize: 16,),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            AppInputButtonComponent(
-                              buttonText: AppStrings.LOGIN_MOBILE,
-                              color: Color.fromARGB(255, 63, 16, 10),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, AppRoutes.LoginMobile);
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context,AppRoutes.LogIn);
                               },
-                            ),
+                              child: AppInputText(text: AppStrings.login_username_password, fontsize: 16,)),
                           ],
                         ),
                       ),
