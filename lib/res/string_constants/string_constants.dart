@@ -15,9 +15,9 @@ class AppStrings {
   static const String confirm_mpin = "Confirm mPin";
   static const String confirm = "CONFIRM"; 
   static const String set_mpin = "Set mPin";
-  // static const String ptin_number = "PTIN Number";
-  // static const String ptin_number = "PTIN Number";
-  // static const String ptin_number = "PTIN Number";
+  static const String verification_code = "Verification code";
+  static const String verification_code_text = "We have sent the verification code to your Mobile Number";
+  static const String resend_otp = "Resend otp";
   // static const String ptin_number = "PTIN Number";
   // static const String ptin_number = "PTIN Number";
   // static const String ptin_number = "PTIN Number";

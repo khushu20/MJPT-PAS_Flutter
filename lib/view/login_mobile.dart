@@ -63,7 +63,7 @@ class LoginMobile extends StatelessWidget {
                               height: 20,
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.2,
+                              width: MediaQuery.of(context).size.width * 0.25,
                               height: MediaQuery.of(context).size.height * 0.14,
                               child: SvgPicture.asset(
                                 AssetPath.app_logo,

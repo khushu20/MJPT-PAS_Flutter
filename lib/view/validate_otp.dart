@@ -11,9 +11,9 @@ import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textformfie
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
 
-class ValidateMpin extends StatelessWidget {
-  ValidateMpin({super.key});
-  TextEditingController _mpin = TextEditingController();
+class ValidateOtp extends StatelessWidget {
+  ValidateOtp({super.key});
+  TextEditingController _otp = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,20 +72,30 @@ class ValidateMpin extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 10,
                             ),
                             AppInputText(
-                              text: AppStrings.validate_mpin,
+                              text: AppStrings.verification_code,
                               fontsize: 24,
                               fontweight: FontWeight.bold,
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
+                            ),
+                            AppInputText(
+                              text: AppStrings.verification_code_text,
+                              fontsize: 15,
+                              fontweight: FontWeight.normal,
+                              color: Colors.black,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 10,
                             ),
                             PinCodeFields(
                               length: 4,
                               fieldBorderStyle: FieldBorderStyle.square,
-                              controller: _mpin,
+                              controller: _otp,
                               responsive: false,
                               fieldHeight: 40.0,
                               fieldWidth: 40.0,
@@ -105,7 +115,7 @@ class ValidateMpin extends StatelessWidget {
                                 fontSize: 30.0,
                                 fontWeight: FontWeight.bold,
                               ),
-                              
+
                               onComplete: (mpinOutput) {
                                 // Your logic with pin code
                                 print(mpinOutput);
@@ -118,10 +128,11 @@ class ValidateMpin extends StatelessWidget {
                               },
                             ),
                             SizedBox(
-                              height: 20,),
+                              height: 20,
+                            ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 GestureDetector(
                                     onTap: () {
@@ -129,23 +140,19 @@ class ValidateMpin extends StatelessWidget {
                                           context, AppRoutes.Login);
                                     },
                                     child: AppInputText(
-                                      text: AppStrings.not_you,
-                                      fontsize: 16,
-                                    )),
-                                GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, AppRoutes.Login);
-                                    },
-                                    child: AppInputText(
-                                      text: AppStrings.Forgot_mpin,
+                                      text: AppStrings.resend_otp,
                                       fontsize: 16,
                                     )),
                               ],
                             ),
                             SizedBox(
-                              height: 20,),
-                            AppInputButtonComponent(onPressed: (){}, buttonText: AppStrings.validate, color:Color.fromARGB(255, 63, 16, 10),)
+                              height: 20,
+                            ),
+                            AppInputButtonComponent(
+                              onPressed: () {},
+                              buttonText: AppStrings.validate,
+                              color: Color.fromARGB(255, 63, 16, 10),
+                            )
                           ],
                         ),
                       ),
