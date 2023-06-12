@@ -10,8 +10,8 @@ import '../res/Routes/App_routes.dart';
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
 
-class LogIn extends StatelessWidget {
-  LogIn({super.key});
+class Login extends StatelessWidget {
+  Login({super.key});
   final _formKey = GlobalKey<FormState>();
   FocusScopeNode _node = FocusScopeNode();
   TextEditingController _username = TextEditingController();
@@ -94,6 +94,8 @@ class LogIn extends StatelessWidget {
                               color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () {
                                 print("ssdd");
+                                Navigator.pushNamed(
+                                    context, AppRoutes.ValidateMPIN);
                               },
                             ),
                             SizedBox(

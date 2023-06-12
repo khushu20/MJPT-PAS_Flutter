@@ -11,9 +11,10 @@ import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textformfie
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
 
-class ValidateMpin extends StatelessWidget {
-  ValidateMpin({super.key});
+class SetMpin extends StatelessWidget {
+  SetMpin({super.key});
   TextEditingController _mpin = TextEditingController();
+  TextEditingController _confirmMpin = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,12 +73,21 @@ class ValidateMpin extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 20,
                             ),
                             AppInputText(
-                              text: AppStrings.validate_mpin,
-                              fontsize: 24,
+                              text: AppStrings.set_mpin,
+                              fontsize: 15,
                               fontweight: FontWeight.bold,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            AppInputText(
+                              text: AppStrings.generate_mpin,
+                              fontsize: 15,
+                              fontweight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                             SizedBox(
                               height: 20,
@@ -105,7 +115,7 @@ class ValidateMpin extends StatelessWidget {
                                 fontSize: 30.0,
                                 fontWeight: FontWeight.bold,
                               ),
-                              
+
                               onComplete: (mpinOutput) {
                                 // Your logic with pin code
                                 print(mpinOutput);
@@ -118,34 +128,58 @@ class ValidateMpin extends StatelessWidget {
                               },
                             ),
                             SizedBox(
-                              height: 20,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, AppRoutes.LogIn);
-                                    },
-                                    child: AppInputText(
-                                      text: AppStrings.not_you,
-                                      fontsize: 16,
-                                    )),
-                                GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, AppRoutes.LogIn);
-                                    },
-                                    child: AppInputText(
-                                      text: AppStrings.Forgot_mpin,
-                                      fontsize: 16,
-                                    )),
-                              ],
+                              height: 20,
+                            ),
+                            AppInputText(
+                              text: AppStrings.confirm_mpin,
+                              fontsize: 16,
                             ),
                             SizedBox(
-                              height: 20,),
-                            AppInputButtonComponent(onPressed: (){}, buttonText: AppStrings.validate, color:Color.fromARGB(255, 63, 16, 10),)
+                              height: 20,
+                            ),
+                            PinCodeFields(
+                              length: 4,
+                              fieldBorderStyle: FieldBorderStyle.square,
+                              controller: _confirmMpin,
+                              responsive: false,
+                              fieldHeight: 40.0,
+                              fieldWidth: 40.0,
+                              borderWidth: 1.0,
+                              //obscureCharacter: ".",
+                              obscureText: true,
+                              activeBorderColor:
+                                  Color.fromARGB(255, 43, 17, 17),
+                              activeBackgroundColor: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                              keyboardType: TextInputType.number,
+                              autoHideKeyboard: true,
+                              fieldBackgroundColor: Colors.black12,
+                              borderColor: Color.fromARGB(255, 43, 17, 17),
+                              textStyle: TextStyle(
+                                color: Color.fromARGB(255, 43, 17, 17),
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+
+                              onComplete: (mpinOutput) {
+                                // Your logic with pin code
+                                print(mpinOutput);
+                                /* widget.textEditingController.text = mpinOutput;
+                                otp_textcontrol =
+                                    widget.textEditingController.text;
+                                print(
+                                    'otp val ${widget.textEditingController.text}');
+                                print('otp val is ${otp_textcontrol}'); */
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            AppInputButtonComponent(
+                              onPressed: () {},
+                              buttonText: AppStrings.validate,
+                              color: Color.fromARGB(255, 63, 16, 10),
+                            )
                           ],
                         ),
                       ),

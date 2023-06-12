@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppInputText extends StatelessWidget {
-  const AppInputText({super.key, required this.text, required this.fontsize, this.fontweight});
+  const AppInputText({super.key, required this.text, required this.fontsize, this.fontweight, this.color});
   final String text;
   final double fontsize;
-  final FontWeight? fontweight; 
+  final FontWeight? fontweight;
+  final Color? color; 
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -12,7 +13,7 @@ class AppInputText extends StatelessWidget {
       style: TextStyle(
         fontSize: fontsize,
         fontWeight: fontweight ?? FontWeight.normal,
-        color: Color.fromARGB(255, 63, 16, 10),
+        color: color ?? Color.fromARGB(255, 63, 16, 10),
       ),
     );
   }

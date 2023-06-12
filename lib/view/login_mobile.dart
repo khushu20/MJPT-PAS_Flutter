@@ -85,6 +85,7 @@ class LoginMobile extends StatelessWidget {
                               color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () {
                                 print("ssdd");
+                                Navigator.pushNamed(context,AppRoutes.ValidateMPIN);
                               },
                             ),
                             SizedBox(
