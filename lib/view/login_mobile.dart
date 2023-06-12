@@ -85,7 +85,7 @@ class LoginMobile extends StatelessWidget {
                               color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () {
                                 print("ssdd");
-                                Navigator.pushNamed(context,AppRoutes.ValidateMPIN);
+                                Navigator.pushNamed(context,AppRoutes.ValidateMpin);
                               },
                             ),
                             SizedBox(
@@ -93,7 +93,7 @@ class LoginMobile extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context,AppRoutes.LogIn);
+                                Navigator.pushNamed(context,AppRoutes.Login);
                               },
                               child: AppInputText(text: AppStrings.login_username_password, fontsize: 16,)),
                           ],
