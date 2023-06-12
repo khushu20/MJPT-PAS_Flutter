@@ -62,7 +62,7 @@ class SetMpin extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.2,
@@ -73,24 +73,24 @@ class SetMpin extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             AppInputText(
                               text: AppStrings.set_mpin,
-                              fontsize: 15,
+                              fontsize: 24,
                               fontweight: FontWeight.bold,
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             AppInputText(
                               text: AppStrings.generate_mpin,
                               fontsize: 15,
-                              fontweight: FontWeight.bold,
+                              fontweight: FontWeight.normal,
                               color: Colors.black,
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             PinCodeFields(
                               length: 4,
@@ -128,14 +128,14 @@ class SetMpin extends StatelessWidget {
                               },
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             AppInputText(
                               text: AppStrings.confirm_mpin,
                               fontsize: 16,
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             PinCodeFields(
                               length: 4,
@@ -173,7 +173,7 @@ class SetMpin extends StatelessWidget {
                               },
                             ),
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             AppInputButtonComponent(
                               onPressed: () {},
