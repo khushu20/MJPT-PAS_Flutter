@@ -1,16 +1,14 @@
 
-import 'package:mjpt_pas/view/set_mpin.dart';
-import 'package:mjpt_pas/view/validate_mpin.dart';
-import 'package:mjpt_pas/view/validate_otp.dart';
+
 
 class AppRoutes {
   AppRoutes._();
-  static const initial = ValidateOtp;
-  static const Login = "/Login";
-  static const LoginMobile = "/LoginMobile";
-  static const ValidateMpin = "/ValidateMpin";
-  static const SetMpin = "/SetMpin";
-  static const ValidateOtp = "/ValidateOtp";
+  static const initial = validateOtp;
+  static const login = "/Login";
+  static const loginMobile = "/LoginMobile";
+  static const validateMpin = "/ValidateMpin";
+  static const setMpin = "/SetMpin";
+  static const validateOtp = "/ValidateOtp";
   //static const Dashboard = "/Dashboard";
   //static const Dashboard = "/Dashboard";
   //static const Dashboard = "/Dashboard";

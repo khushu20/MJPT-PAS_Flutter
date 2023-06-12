@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mjpt_pas/res/components/base_scaffold.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.dart';
-import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textformfield.dart';
 
 import '../res/Routes/App_routes.dart';
 import '../res/constants/image_constants.dart';
@@ -78,11 +76,11 @@ class Login extends StatelessWidget {
                             ),
                             AppInputTextfield(
                                 texteditingcontroller: _username,
-                                labeltext: AppStrings.UserName,
+                                labeltext: AppStrings.userName,
                                 input_type: TextInputType.name),
                             AppInputTextfield(
                               texteditingcontroller: _password,
-                              labeltext: AppStrings.Password,
+                              labeltext: AppStrings.password,
                               input_type: TextInputType.name,
                               obsecuretext: true,
                             ),
@@ -90,27 +88,27 @@ class Login extends StatelessWidget {
                               height: 20,
                             ),
                             AppInputButtonComponent(
-                              buttonText: AppStrings.LOGIN,
+                              buttonText: AppStrings.login,
                               color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () {
                                 print("ssdd");
                                 Navigator.pushNamed(
-                                    context, AppRoutes.ValidateMpin);
+                                    context, AppRoutes.validateMpin);
                               },
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            AppInputText(text: AppStrings.OR, fontsize: 16,),
+                            AppInputText(text: AppStrings.or, fontsize: 16,),
                             SizedBox(
                               height: 10,
                             ),
                             AppInputButtonComponent(
-                              buttonText: AppStrings.LOGIN_MOBILE,
+                              buttonText: AppStrings.loginMobileNo,
                               color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () {
                                 Navigator.pushNamed(
-                                    context, AppRoutes.LoginMobile);
+                                    context, AppRoutes.loginMobile);
                               },
                             ),
                           ],

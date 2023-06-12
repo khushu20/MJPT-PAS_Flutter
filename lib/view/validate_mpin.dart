@@ -126,7 +126,7 @@ class ValidateMpin extends StatelessWidget {
                                 GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(
-                                          context, AppRoutes.Login);
+                                          context, AppRoutes.login);
                                     },
                                     child: AppInputText(
                                       text: AppStrings.not_you,
@@ -135,7 +135,7 @@ class ValidateMpin extends StatelessWidget {
                                 GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(
-                                          context, AppRoutes.Login);
+                                          context, AppRoutes.login);
                                     },
                                     child: AppInputText(
                                       text: AppStrings.Forgot_mpin,

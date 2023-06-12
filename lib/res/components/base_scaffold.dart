@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import '../Routes/App_routes.dart';
 import '../constants/image_constants.dart';
 
@@ -78,7 +77,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
                 leading: IconButton(
                     onPressed: () {
                       // ProviderForPropertyTax.navigate(context, AppRoutes.dashboard);
-                      widget.backArrowFlag == true ? Navigator.pushNamed(context, AppRoutes.Login) 
+                      widget.backArrowFlag == true ? Navigator.pushNamed(context, AppRoutes.login) 
                       :
                       Navigator.pop(context);
                     },
@@ -89,7 +88,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
                 actions: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, AppRoutes.Login);
+                        Navigator.pushNamed(context, AppRoutes.login);
                         //ProviderForPropertyTax.navigate(context, AppRoutes.dashboard);
                       },
                       icon: Icon(

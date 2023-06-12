@@ -1,11 +1,11 @@
 class AppStrings {
   AppStrings._();
-  static const String UserName = "UserName";
-  static const String Password = "Password";
-  static const String LOGIN = "LOGIN";
-  static const String LOGIN_MOBILE = "LOGIN WITH MOBILE NO.";
-  static const String OR = "OR";
-  static const String Mobile_Number = "Mobile Number";
+  static const String userName = "UserName";
+  static const String password = "Password";
+  static const String login = "LOGIN";
+  static const String loginMobileNo = "LOGIN WITH MOBILE NO.";
+  static const String or = "OR";
+  static const String mobileNo = "Mobile Number";
   static const String login_username_password = "Login with username and password";
   static const String validate_mpin = "Validate mPin";
   static const String not_you = "Not you?";

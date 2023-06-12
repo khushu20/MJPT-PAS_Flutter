@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mjpt_pas/res/Routes/App_routes.dart';
-import 'package:mjpt_pas/res/components/base_scaffold.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.dart';
-import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textformfield.dart';
 
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
@@ -75,17 +73,17 @@ class LoginMobile extends StatelessWidget {
                             ),
                             AppInputTextfield(
                                 texteditingcontroller: _mobile,
-                                labeltext: AppStrings.Mobile_Number,
+                                labeltext: AppStrings.mobileNo,
                                 input_type: TextInputType.name),
                             SizedBox(
                               height: 40,
                             ),
                             AppInputButtonComponent(
-                              buttonText: AppStrings.LOGIN,
+                              buttonText: AppStrings.login,
                               color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () {
                                 print("ssdd");
-                                Navigator.pushNamed(context,AppRoutes.ValidateMpin);
+                                Navigator.pushNamed(context,AppRoutes.validateMpin);
                               },
                             ),
                             SizedBox(
@@ -93,7 +91,7 @@ class LoginMobile extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context,AppRoutes.Login);
+                                Navigator.pushNamed(context,AppRoutes.login);
                               },
                               child: AppInputText(text: AppStrings.login_username_password, fontsize: 16,)),
                           ],
