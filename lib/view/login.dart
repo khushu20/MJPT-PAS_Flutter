@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.dart';
+import 'package:mjpt_pas/viewmodel/login_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../res/Routes/App_routes.dart';
 import '../res/constants/image_constants.dart';
@@ -10,12 +13,12 @@ import '../res/string_constants/string_constants.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
-  final _formKey = GlobalKey<FormState>();
-  FocusScopeNode _node = FocusScopeNode();
   TextEditingController _username = TextEditingController();
   TextEditingController _password = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final ProviderForLogin =
+        Provider.of<LoginViewModel>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
@@ -75,9 +78,14 @@ class Login extends StatelessWidget {
                               height: 20,
                             ),
                             AppInputTextfield(
-                                texteditingcontroller: _username,
-                                labeltext: AppStrings.userName,
-                                input_type: TextInputType.name),
+                              texteditingcontroller: _username,
+                              labeltext: AppStrings.userName,
+                              input_type: TextInputType.name,
+                              inputFormatters: [
+                                new FilteringTextInputFormatter.allow(
+                                    RegExp(r'[a-zA-Z\s]')),
+                              ],
+                            ),
                             AppInputTextfield(
                               texteditingcontroller: _password,
                               labeltext: AppStrings.password,
@@ -89,23 +97,28 @@ class Login extends StatelessWidget {
                             ),
                             AppInputButtonComponent(
                               buttonText: AppStrings.login,
-                              color: Color.fromARGB(255, 63, 16, 10),
+                              //color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () {
                                 print("ssdd");
-                                Navigator.pushNamed(
-                                    context, AppRoutes.validateMpin);
+                                ProviderForLogin.LoginValidation(
+                                    _username.text, _password.text, context);
+                                /* Navigator.pushNamed(
+                                    context, AppRoutes.validateMpin); */
                               },
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            AppInputText(text: AppStrings.or, fontsize: 16,),
+                            AppInputText(
+                              text: AppStrings.or,
+                              fontsize: 16,
+                            ),
                             SizedBox(
                               height: 10,
                             ),
                             AppInputButtonComponent(
                               buttonText: AppStrings.loginMobileNo,
-                              color: Color.fromARGB(255, 63, 16, 10),
+                              //color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () {
                                 Navigator.pushNamed(
                                     context, AppRoutes.loginMobile);

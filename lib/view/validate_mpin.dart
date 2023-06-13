@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mjpt_pas/res/Routes/App_routes.dart';
-import 'package:mjpt_pas/res/components/base_scaffold.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
-import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.dart';
-import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textformfield.dart';
 
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
@@ -145,7 +142,10 @@ class ValidateMpin extends StatelessWidget {
                             ),
                             SizedBox(
                               height: 20,),
-                            AppInputButtonComponent(onPressed: (){}, buttonText: AppStrings.validate, color:Color.fromARGB(255, 63, 16, 10),)
+                            AppInputButtonComponent(onPressed: (){}, 
+                            buttonText: AppStrings.validate, 
+                            //color:Color.fromARGB(255, 63, 16, 10),
+                            )
                           ],
                         ),
                       ),

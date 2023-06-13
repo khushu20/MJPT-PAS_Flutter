@@ -25,6 +25,7 @@ class AppInputTextfield extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      
       maxLength: maxlength,
       inputFormatters: inputFormatters,
       obscureText: obsecuretext ?? false,

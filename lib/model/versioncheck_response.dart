@@ -1,31 +1,67 @@
-class VersionCheckResponse {
-  String? tag;
-  String? url;
-  String? message;
-  String? version;
-  bool? status;
-  bool? accountDeleteFlag;
+class VersioncheckResponse {
+  bool? success;
+  String? statusMessage;
+  int? statusCode;
+  Data? data;
+  bool? paginated;
 
-  VersionCheckResponse(
-      {this.tag, this.url, this.message, this.status, this.accountDeleteFlag, this.version});
+  VersioncheckResponse(
+      {this.success,
+      this.statusMessage,
+      this.statusCode,
+      this.data,
+      this.paginated});
 
-  VersionCheckResponse.fromJson(Map<String, dynamic> json) {
-    tag = json['tag'];
-    url = json['url'];
-    message = json['Message'];
-    status = json['status'];
-    version = json['version'];
-    accountDeleteFlag = json['Account_Delete_Flag'];
+  VersioncheckResponse.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    statusMessage = json['status_Message'];
+    statusCode = json['status_Code'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    paginated = json['paginated'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['tag'] = this.tag;
-    data['url'] = this.url;
-    data['Message'] = this.message;
-    data['status'] = this.status;
-    data['version'] = this.version;
-    data['Account_Delete_Flag'] = this.accountDeleteFlag;
+    data['success'] = this.success;
+    data['status_Message'] = this.statusMessage;
+    data['status_Code'] = this.statusCode;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    data['paginated'] = this.paginated;
+    return data;
+  }
+}
+
+class Data {
+  String? appName;
+  String? webServiceName;
+  String? versionNo;
+  String? lastUpdatedDate;
+  int? maxTimeChk;
+
+  Data(
+      {this.appName,
+      this.webServiceName,
+      this.versionNo,
+      this.lastUpdatedDate,
+      this.maxTimeChk});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    appName = json['appName'];
+    webServiceName = json['webServiceName'];
+    versionNo = json['versionNo'];
+    lastUpdatedDate = json['lastUpdatedDate'];
+    maxTimeChk = json['maxTimeChk'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['appName'] = this.appName;
+    data['webServiceName'] = this.webServiceName;
+    data['versionNo'] = this.versionNo;
+    data['lastUpdatedDate'] = this.lastUpdatedDate;
+    data['maxTimeChk'] = this.maxTimeChk;
     return data;
   }
 }

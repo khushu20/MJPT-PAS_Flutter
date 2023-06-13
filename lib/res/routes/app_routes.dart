@@ -3,7 +3,7 @@
 
 class AppRoutes {
   AppRoutes._();
-  static const initial = validateOtp;
+  static const initial = login;
   static const login = "/Login";
   static const loginMobile = "/LoginMobile";
   static const validateMpin = "/ValidateMpin";

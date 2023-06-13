@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color PRIMARY_COLOR = Color.fromARGB(0, 12, 116, 146);
-  static const Color PRIMARY_COLOR_LIGHT = Color(0xFFA5CFF1);
-  static const Color PRIMARY_COLOR_DARK = Color(0xFF0D3656);
-  static const Color ACCENT_COLOR = Color(0xFFF2DA04);
-  static const Color StatusBarColor = Color(0xFFF00879b);
-  static const Color register_button = Color.fromARGB(255, 214, 96, 136);
+  static const PRIMARY_COLOR_LIGHT = const Color(0xFFa62a3f);
+  static const PRIMARY_COLOR_DARK = const Color(0xFF39030d);
   static const Color transparent = Colors.transparent;
   static const Color white = Colors.white;
   static const Color black = Colors.black;
-  static const Color TextColor_checkstatus = Color.fromARGB(255, 131, 123, 123);
-  static const Color Button_red_color = Color.fromARGB(255, 189, 36, 25);
-  static const Color Button_green_color = Color.fromARGB(255, 55, 138, 58);
+ 
   static const MaterialColor navy = MaterialColor(
     0xFF162A69,
     <int, Color>{

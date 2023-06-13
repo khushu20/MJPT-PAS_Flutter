@@ -134,8 +134,8 @@ class ValidateOtp extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                     onTap: () {
-                                      Navigator.pushNamed(
-                                          context, AppRoutes.login);
+                                      /* Navigator.pushNamed(
+                                          context, AppRoutes.login); */
                                     },
                                     child: AppInputText(
                                       text: AppStrings.resend_otp,
@@ -149,7 +149,7 @@ class ValidateOtp extends StatelessWidget {
                             AppInputButtonComponent(
                               onPressed: () {},
                               buttonText: AppStrings.validate,
-                              color: Color.fromARGB(255, 63, 16, 10),
+                              //color: Color.fromARGB(255, 63, 16, 10),
                             )
                           ],
                         ),

@@ -5,7 +5,6 @@ import 'package:mjpt_pas/view/validate_otp.dart';
 import '../../view/login.dart';
 import '../../view/set_mpin.dart';
 import '../../view/validate_mpin.dart';
-import '../../view/validate_otp.dart';
 import 'App_routes.dart';
 
 class AppPages {

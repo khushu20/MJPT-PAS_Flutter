@@ -18,10 +18,10 @@ class AppStrings {
   static const String verification_code = "Verification code";
   static const String verification_code_text = "We have sent the verification code to your Mobile Number";
   static const String resend_otp = "Resend otp";
-  // static const String ptin_number = "PTIN Number";
-  // static const String ptin_number = "PTIN Number";
-  // static const String ptin_number = "PTIN Number";
-  // static const String ptin_number = "PTIN Number";
+  static const String username_empty = "UserName can't be empty";
+  static const String password_empty = "Password can't be empty";
+  static const String mobilenumber_empty = "MobileNumber can't be empty";
+  static const String mobilenumber_invalid = "MobileNumber Invalid";
   // static const String ptin_number = "PTIN Number";
   // static const String ptin_number = "PTIN Number";
   // static const String ptin_number = "PTIN Number";

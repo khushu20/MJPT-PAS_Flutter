@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mjpt_pas/res/Routes/App_routes.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.dart';
+import 'package:mjpt_pas/viewmodel/login_mobile_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
@@ -13,6 +16,8 @@ class LoginMobile extends StatelessWidget {
   TextEditingController _mobile = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final ProviderForLoginMobile =
+        Provider.of<LoginMobileViewModel>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
@@ -72,28 +77,42 @@ class LoginMobile extends StatelessWidget {
                               height: 50,
                             ),
                             AppInputTextfield(
-                                texteditingcontroller: _mobile,
-                                labeltext: AppStrings.mobileNo,
-                                input_type: TextInputType.name),
+                              texteditingcontroller: _mobile,
+                              labeltext: AppStrings.mobileNo,
+                              input_type: TextInputType.number,
+                              maxlength: 10,
+                              inputFormatters: [
+                                new FilteringTextInputFormatter.allow(
+                                    RegExp("[0-9]")),
+                              ],
+                              onEditingComplete: () {
+                                FocusScope.of(context).unfocus();
+                              },
+                            ),
                             SizedBox(
                               height: 40,
                             ),
                             AppInputButtonComponent(
                               buttonText: AppStrings.login,
-                              color: Color.fromARGB(255, 63, 16, 10),
+                              //color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () {
                                 print("ssdd");
-                                Navigator.pushNamed(context,AppRoutes.validateMpin);
+                                ProviderForLoginMobile.LoginMobileValidation(_mobile.text, context);
+                                /* Navigator.pushNamed(
+                                    context, AppRoutes.validateMpin); */
                               },
                             ),
                             SizedBox(
                               height: 40,
                             ),
                             GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context,AppRoutes.login);
-                              },
-                              child: AppInputText(text: AppStrings.login_username_password, fontsize: 16,)),
+                                onTap: () {
+                                  Navigator.pushNamed(context, AppRoutes.login);
+                                },
+                                child: AppInputText(
+                                  text: AppStrings.login_username_password,
+                                  fontsize: 16,
+                                )),
                           ],
                         ),
                       ),
