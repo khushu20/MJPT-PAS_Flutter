@@ -22,4 +22,6 @@ class ApiErrorCodes {
   static const String NoRecords_code="400";
   static const String Session_Expired="600";
   static const String c_fail="FAIL";
+  static const String status_Message = "Login success";
+  static const String mpin_status_Message = "mPin Verified Successfully";
 }

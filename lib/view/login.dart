@@ -8,6 +8,7 @@ import 'package:mjpt_pas/viewmodel/login_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../res/Routes/App_routes.dart';
+import '../res/app_colors/app_colors.dart';
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
 
@@ -22,7 +23,7 @@ class Login extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
-        color: Color.fromARGB(255, 63, 16, 10),
+        color:AppColors.PRIMARY_COLOR_DARK,
         height: MediaQuery.of(context).size.height * 0.06,
         child: SvgPicture.asset(
           AssetPath.footer,

@@ -1,5 +1,8 @@
 class AppStrings {
   AppStrings._();
+
+  static const String ENCRYPTION_KEY = "bXVzdGJlMTZieXRlc2tleQ==";
+
   static const String userName = "UserName";
   static const String password = "Password";
   static const String login = "LOGIN";
@@ -22,9 +25,9 @@ class AppStrings {
   static const String password_empty = "Password can't be empty";
   static const String mobilenumber_empty = "MobileNumber can't be empty";
   static const String mobilenumber_invalid = "MobileNumber Invalid";
-  // static const String ptin_number = "PTIN Number";
-  // static const String ptin_number = "PTIN Number";
-  // static const String ptin_number = "PTIN Number";
-  // static const String ptin_number = "PTIN Number";
+  static const String appName = "MJPHRMS";
+  static const String mpin_length_validate = "MPIN length should be 4";
+  static const String mpin_empty = "MPIN can't be empty";
+  static const String mpin_invalid = "MPIN invalid";
   // static const String ptin_number = "PTIN Number";
 }

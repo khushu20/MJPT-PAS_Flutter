@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
 
+import '../res/app_colors/app_colors.dart';
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
 
@@ -18,7 +19,7 @@ class SetMpin extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
-        color: Color.fromARGB(255, 63, 16, 10),
+        color: AppColors.PRIMARY_COLOR_DARK,
         height: MediaQuery.of(context).size.height * 0.06,
         child: SvgPicture.asset(
           AssetPath.footer,

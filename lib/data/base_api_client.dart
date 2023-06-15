@@ -1,15 +1,17 @@
-/* 
+
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import '../res/constants/api_constants.dart';
 
 
 
 class baseApiClient {
   late final Dio _client = Dio(
-    BaseOptions(/* baseUrl: ApiConstants.baseUrlMyGHMC */),
+    BaseOptions(baseUrl: ApiConstants.baseUrlHRMS),
   );
-  late final Dio client = Dio(
+  /* late final Dio client = Dio(
     BaseOptions(/* baseUrl: ApiConstants.baseUrlPetTypeMyGHMC */),
   );
   /* late final Dio weatherclient = Dio(
@@ -24,7 +26,7 @@ class baseApiClient {
 
   late final Dio CandDclient = Dio(
     BaseOptions(/* baseUrl: ApiConstants.baseUrlCandD */),
-  );
+  ); */
 
   Future<dynamic> getCall(
     String url,
@@ -37,17 +39,17 @@ class baseApiClient {
     }
   }
 
-  Future<dynamic> getPetTypeCall(String url) async {
+  /* Future<dynamic> getPetTypeCall(String url) async {
     try {
       final response = await client.get(url);
       return response.data;
     } catch (e) {
         EasyLoading.dismiss();
     }
-  }
+  } */
 
   Future<dynamic> postCall(String url, Map<String, dynamic> payload,
-      {String contenType = "application/json"}) async {
+      {String contenType = "application/json",}) async {
     try {
       final response = await _client.post(
         url,
@@ -65,7 +67,28 @@ class baseApiClient {
     }
   }
 
-  Future<dynamic> CandDpostCall(String url, Map<String, dynamic> payload,
+  Future<dynamic> postAuthorizationCall(String url, Map<String, dynamic> payload, 
+      {String contenType = "application/json", String? BearerToken,}) async {
+    try {
+      final response = await _client.post(
+        url,
+        data: payload,
+        options: Options(headers: {
+          'Content-Type': contenType,
+          'Authorization': BearerToken,
+        }),
+      );
+      print(response.data);
+      print("postAuthorizationCall payload $payload");
+      return response.data;
+    } catch (e) {
+        EasyLoading.dismiss();
+      print('error');
+    }
+  }
+
+
+  /* Future<dynamic> CandDpostCall(String url, Map<String, dynamic> payload,
       {String contenType = "application/json"}) async {
         print(" payload in baseapi${payload}");
     try {
@@ -134,6 +157,5 @@ class baseApiClient {
     }
     );
     return response.data;
-  }
+  } */
 }
- */

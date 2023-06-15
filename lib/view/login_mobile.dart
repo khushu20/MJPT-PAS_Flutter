@@ -8,12 +8,17 @@ import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.d
 import 'package:mjpt_pas/viewmodel/login_mobile_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../data/local_store_helper.dart';
+import '../model/login_mobile_response.dart';
+import '../res/app_colors/app_colors.dart';
 import '../res/constants/image_constants.dart';
+import '../res/constants/shared_pref_consts.dart';
 import '../res/string_constants/string_constants.dart';
 
 class LoginMobile extends StatelessWidget {
   LoginMobile({super.key});
   TextEditingController _mobile = TextEditingController();
+  Data? loginMobileData;
   @override
   Widget build(BuildContext context) {
     final ProviderForLoginMobile =
@@ -21,7 +26,7 @@ class LoginMobile extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
-        color: Color.fromARGB(255, 63, 16, 10),
+        color: AppColors.PRIMARY_COLOR_DARK,
         height: MediaQuery.of(context).size.height * 0.06,
         child: SvgPicture.asset(
           AssetPath.footer,
@@ -95,9 +100,19 @@ class LoginMobile extends StatelessWidget {
                             AppInputButtonComponent(
                               buttonText: AppStrings.login,
                               //color: Color.fromARGB(255, 63, 16, 10),
-                              onPressed: () {
+                              onPressed: () async{
+                                await LocalStoreHelper().writeTheData(
+                                    SharedPrefConstants.mobileNumber, _mobile.text);
                                 print("ssdd");
-                                ProviderForLoginMobile.LoginMobileValidation(_mobile.text, context);
+                                bool validate = await ProviderForLoginMobile.LoginMobileValidation(
+                                    _mobile.text, context);
+                                    print("validate"+validate.toString());
+                                if( validate == true ) {
+                                      loginMobileData =  await ProviderForLoginMobile.loginMobileService(context);
+                                      Navigator.pushNamed(context, AppRoutes.validateMpin, arguments: loginMobileData);
+                                    }
+                                
+                                    print("4545454 "+loginMobileData!.toString());
                                 /* Navigator.pushNamed(
                                     context, AppRoutes.validateMpin); */
                               },

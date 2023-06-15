@@ -4,19 +4,45 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mjpt_pas/res/Routes/App_routes.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
+import 'package:provider/provider.dart';
 
+import '../data/local_store_helper.dart';
+import '../model/login_mobile_response.dart';
+import '../model/validate_mpin_response.dart';
+import '../res/app_colors/app_colors.dart';
 import '../res/constants/image_constants.dart';
+import '../res/constants/shared_pref_consts.dart';
 import '../res/string_constants/string_constants.dart';
+import '../viewmodel/validate_mpin_view_model.dart';
 
-class ValidateMpin extends StatelessWidget {
+class ValidateMpin extends StatefulWidget {
   ValidateMpin({super.key});
+
+  @override
+  State<ValidateMpin> createState() => _ValidateMpinState();
+}
+
+class _ValidateMpinState extends State<ValidateMpin> {
   TextEditingController _mpin = TextEditingController();
+
+  Data? args;
+
+  String? entered_mPin;
+
+  List<ValidateMpinData>? validateMpinData;
+
   @override
   Widget build(BuildContext context) {
+    args = ModalRoute.of(context)!.settings.arguments as Data;
+    final ProviderForValidateMpin =
+        Provider.of<ValidateMpinViewModel>(context, listen: false);
+
+    print("111111 ${args!.otpMobile}");
+    print("222222 ${args!.authToken}");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
-        color: Color.fromARGB(255, 63, 16, 10),
+        color: AppColors.PRIMARY_COLOR_DARK,
         height: MediaQuery.of(context).size.height * 0.06,
         child: SvgPicture.asset(
           AssetPath.footer,
@@ -102,10 +128,12 @@ class ValidateMpin extends StatelessWidget {
                                 fontSize: 30.0,
                                 fontWeight: FontWeight.bold,
                               ),
-                              
+
                               onComplete: (mpinOutput) {
                                 // Your logic with pin code
                                 print(mpinOutput);
+                                entered_mPin = mpinOutput;
+
                                 /* widget.textEditingController.text = mpinOutput;
                                 otp_textcontrol =
                                     widget.textEditingController.text;
@@ -115,7 +143,8 @@ class ValidateMpin extends StatelessWidget {
                               },
                             ),
                             SizedBox(
-                              height: 20,),
+                              height: 20,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -130,7 +159,9 @@ class ValidateMpin extends StatelessWidget {
                                       fontsize: 16,
                                     )),
                                 GestureDetector(
-                                    onTap: () {
+                                    onTap: () async {
+                                      await ProviderForValidateMpin.forgotMpin(
+                                          context);
                                       Navigator.pushNamed(
                                           context, AppRoutes.login);
                                     },
@@ -141,10 +172,39 @@ class ValidateMpin extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                              height: 20,),
-                            AppInputButtonComponent(onPressed: (){}, 
-                            buttonText: AppStrings.validate, 
-                            //color:Color.fromARGB(255, 63, 16, 10),
+                              height: 20,
+                            ),
+                            AppInputButtonComponent(
+                              onPressed: () async {
+                                setState(() {
+                                  _mpin.text = '';
+                                });
+                                bool flag =
+                                    ProviderForValidateMpin.mpinValidate(
+                                        entered_mPin ?? '', context);
+                                var mPin = await LocalStoreHelper()
+                                    .readTheData(SharedPrefConstants.mPin);
+                                var userid = await LocalStoreHelper()
+                                    .readTheData(
+                                        SharedPrefConstants.userId.toString());
+                                print("mPin $mPin");
+                                print("userid $userid");
+                                if (flag == true) {
+                                  validateMpinData =
+                                      await ProviderForValidateMpin.mpinMatch(
+                                          entered_mPin ?? '',
+                                          mPin,
+                                          args!.userId ?? 0,
+                                          args!.authToken ?? '',
+                                          context);
+                                }
+                                
+                                
+                                print(
+                                    "roleName ${validateMpinData![0].roleName}");
+                              },
+                              buttonText: AppStrings.validate,
+                              //color:Color.fromARGB(255, 63, 16, 10),
                             )
                           ],
                         ),

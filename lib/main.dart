@@ -4,6 +4,7 @@ import 'package:mjpt_pas/res/Routes/App_routes.dart';
 import 'package:mjpt_pas/res/routes/app_pages.dart';
 import 'package:mjpt_pas/viewmodel/login_mobile_view_model.dart';
 import 'package:mjpt_pas/viewmodel/login_view_model.dart';
+import 'package:mjpt_pas/viewmodel/validate_mpin_view_model.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -20,6 +21,17 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        ChangeNotifierProvider(create: (_) =>ValidateMpinViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
       ],
       child: MaterialApp(
         builder: EasyLoading.init(),

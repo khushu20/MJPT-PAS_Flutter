@@ -13,4 +13,13 @@ class Utils {
     }
     return null;
   }
+
+  Future<String?> getDeviceType() async {
+    if (Platform.isIOS) {
+      return "IOS";
+    } else if (Platform.isAndroid) {
+      return "ANDROID";
+    }
+    return null;
+  }
 }
