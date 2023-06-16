@@ -25,7 +25,7 @@ class ValidateMpin extends StatefulWidget {
 class _ValidateMpinState extends State<ValidateMpin> {
   TextEditingController _mpin = TextEditingController();
 
-  Data? args;
+  LoginData? args;
 
   String? entered_mPin;
 
@@ -33,7 +33,7 @@ class _ValidateMpinState extends State<ValidateMpin> {
 
   @override
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context)!.settings.arguments as Data;
+    args = ModalRoute.of(context)!.settings.arguments as LoginData;
     final ProviderForValidateMpin =
         Provider.of<ValidateMpinViewModel>(context, listen: false);
 

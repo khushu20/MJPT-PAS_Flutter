@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mjpt_pas/model/login_mobile_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStoreHelper {
@@ -37,5 +40,27 @@ class LocalStoreHelper {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int colorValue = prefs.getInt('color') ?? Colors.blue.value;
     return Color(colorValue);
+  }
+
+  Future<dynamic> writeLoginResponse(String key, LoginData logindata) async {
+    final prefs = await SharedPreferences.getInstance();
+    String modelDataJson = json.encode(logindata); // Convert the data to JSO
+    await prefs.setString(key, modelDataJson);
+    return prefs.get(key);
+  }
+
+  Future<LoginData> readLogin(String key) async {
+    var loginData = LoginData();
+    final prefs = await SharedPreferences.getInstance();
+
+    String? modelDataJson = prefs.getString(key);
+
+    if (modelDataJson != null) {
+      Map<String, dynamic> modelData = json.decode(modelDataJson);
+      loginData = LoginData.fromJson(modelData);
+      return loginData ;
+      
+    }
+    return loginData;
   }
 }

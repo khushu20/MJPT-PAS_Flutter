@@ -2,26 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mjpt_pas/res/Routes/App_routes.dart';
+import 'package:mjpt_pas/res/app_alerts/custom_error_alert.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.dart';
+import 'package:mjpt_pas/utils/deviceid.dart';
+import 'package:mjpt_pas/utils/internet_check.dart';
 import 'package:mjpt_pas/viewmodel/login_mobile_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../data/local_store_helper.dart';
 import '../model/login_mobile_response.dart';
 import '../res/app_colors/app_colors.dart';
+import '../res/components/reusable widgets/app_toast.dart';
 import '../res/constants/image_constants.dart';
-import '../res/constants/shared_pref_consts.dart';
+
 import '../res/string_constants/string_constants.dart';
 
 class LoginMobile extends StatelessWidget {
   LoginMobile({super.key});
   TextEditingController _mobile = TextEditingController();
-  Data? loginMobileData;
+  LoginData? loginMobileData;
   @override
   Widget build(BuildContext context) {
-    final ProviderForLoginMobile =
+    final loginViewModel =
         Provider.of<LoginMobileViewModel>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -56,7 +59,7 @@ class LoginMobile extends StatelessWidget {
                     elevation: 5,
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.9,
-                      height: MediaQuery.of(context).size.height * 0.65,
+                      height: MediaQuery.of(context).size.height * 0.6,
                       /* decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(60),
                       ), */
@@ -101,41 +104,25 @@ class LoginMobile extends StatelessWidget {
                               buttonText: AppStrings.login,
                               //color: Color.fromARGB(255, 63, 16, 10),
                               onPressed: () async {
-                                await LocalStoreHelper().writeTheData(
-                                    SharedPrefConstants.mobileNumber,
-                                    _mobile.text);
-                                String otp = await LocalStoreHelper()
-                                    .readTheData(SharedPrefConstants.otpMobile);
-                                String mpin = await LocalStoreHelper()
-                                    .readTheData(SharedPrefConstants.mPin);
-                                print("otp" + otp.toString());
-                                print("mpin" + mpin.toString());
-                                bool validate = await ProviderForLoginMobile
-                                    .LoginMobileValidation(
-                                        _mobile.text, context);
-                                print("validate" + validate.toString());
-                                if (validate == true) {
-                                  loginMobileData = await ProviderForLoginMobile
-                                      .loginMobileService(context);
-
-                                  if (otp.isNotEmpty && mpin.isEmpty) {
-                                    print("otp screen");
-                                    Navigator.pushNamed(
-                                        context, AppRoutes.validateOtp,
-                                        arguments: loginMobileData);
-                                  } else if (otp.isEmpty && mpin.isNotEmpty)
-                                  {
-                                    print("mpin screen");
-                                    Navigator.pushNamed(
-                                        context, AppRoutes.validateMpin,
-                                        arguments: loginMobileData);
+                                bool isConnected = await InternetCheck()
+                                    .hasInternetConnection();
+                                if (isConnected) {
+                                  if (mobileValidations()) {
+                                    loginMobileData =
+                                        await loginViewModel.loginMobileService(
+                                            context, _mobile.text.toString());
                                   }
-                                    
+                                } else {
+                                  CustomErrorAlert(
+                                      descriptions:
+                                          AppStrings.plz_internet_check,
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      Img: AssetPath.bg_image);
+                                /*   AppToast()
+                                      .showToast(AppStrings.plz_internet_check); */
                                 }
-
-                                print("4545454 " + loginMobileData!.toString());
-                                /* Navigator.pushNamed(
-                                    context, AppRoutes.validateMpin); */
                               },
                             ),
                             SizedBox(
@@ -157,5 +144,19 @@ class LoginMobile extends StatelessWidget {
             ]),
       ),
     );
+  }
+
+  bool mobileValidations() {
+    if (_mobile.text.isEmpty) {
+      AppToast().showToast(AppStrings.mobilenumber_empty);
+      return false;
+    } else if (_mobile.text.length != 10) {
+      AppToast().showToast(AppStrings.mobilenumber_invalid);
+      return false;
+    } else if (!RegExp(r'^([6-9]{1})([0-9]{9})$').hasMatch(_mobile.text)) {
+      AppToast().showToast(AppStrings.mobilenumber_invalid);
+      return false;
+    }
+    return true;
   }
 }

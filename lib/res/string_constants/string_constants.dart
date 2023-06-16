@@ -29,5 +29,7 @@ class AppStrings {
   static const String mpin_length_validate = "MPIN length should be 4";
   static const String mpin_empty = "MPIN can't be empty";
   static const String mpin_invalid = "MPIN invalid";
+  static const String plz_internet_check = "Please check your Internet Connection";
+  static const String server_not_responding = "Server Not Responding Please try Later...";
   // static const String ptin_number = "PTIN Number";
 }

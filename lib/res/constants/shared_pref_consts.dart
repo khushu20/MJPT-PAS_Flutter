@@ -24,6 +24,7 @@ class SharedPrefConstants {
   static const String employeeType = 'employeeType';
   static const String sessionToken = 'sessionToken';
   static const String roleId = 'roleId';
+  static const String loginResponse = 'loginResponse';
   // static const String mPin = 'mPin';
   // static const String mPin = 'mPin';
   // static const String mPin = 'mPin';
