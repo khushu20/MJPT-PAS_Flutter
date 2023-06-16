@@ -56,6 +56,8 @@ class Data {
   String? radius;
   int? locationId;
   String? employeeType;
+  String? sessionToken;
+  int? roleId;
 
   Data(
       {this.employeeId,
@@ -79,7 +81,10 @@ class Data {
       this.longitude,
       this.radius,
       this.locationId,
-      this.employeeType});
+      this.employeeType,
+      this.sessionToken,
+      this.roleId
+      });
 
   Data.fromJson(Map<String, dynamic> json) {
     employeeId = json['employeeId'];
@@ -104,6 +109,8 @@ class Data {
     radius = json['radius'];
     locationId = json['locationId'];
     employeeType = json['employeeType'];
+    sessionToken = json['sessionToken'];
+    roleId = json['roleId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -130,6 +137,8 @@ class Data {
     data['radius'] = this.radius;
     data['locationId'] = this.locationId;
     data['employeeType'] = this.employeeType;
+    data['sessionToken'] = this.sessionToken;
+    data['roleId'] = this.roleId;
     return data;
   }
 }

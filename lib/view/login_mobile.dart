@@ -100,19 +100,40 @@ class LoginMobile extends StatelessWidget {
                             AppInputButtonComponent(
                               buttonText: AppStrings.login,
                               //color: Color.fromARGB(255, 63, 16, 10),
-                              onPressed: () async{
+                              onPressed: () async {
                                 await LocalStoreHelper().writeTheData(
-                                    SharedPrefConstants.mobileNumber, _mobile.text);
-                                print("ssdd");
-                                bool validate = await ProviderForLoginMobile.LoginMobileValidation(
-                                    _mobile.text, context);
-                                    print("validate"+validate.toString());
-                                if( validate == true ) {
-                                      loginMobileData =  await ProviderForLoginMobile.loginMobileService(context);
-                                      Navigator.pushNamed(context, AppRoutes.validateMpin, arguments: loginMobileData);
-                                    }
-                                
-                                    print("4545454 "+loginMobileData!.toString());
+                                    SharedPrefConstants.mobileNumber,
+                                    _mobile.text);
+                                String otp = await LocalStoreHelper()
+                                    .readTheData(SharedPrefConstants.otpMobile);
+                                String mpin = await LocalStoreHelper()
+                                    .readTheData(SharedPrefConstants.mPin);
+                                print("otp" + otp.toString());
+                                print("mpin" + mpin.toString());
+                                bool validate = await ProviderForLoginMobile
+                                    .LoginMobileValidation(
+                                        _mobile.text, context);
+                                print("validate" + validate.toString());
+                                if (validate == true) {
+                                  loginMobileData = await ProviderForLoginMobile
+                                      .loginMobileService(context);
+
+                                  if (otp.isNotEmpty && mpin.isEmpty) {
+                                    print("otp screen");
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.validateOtp,
+                                        arguments: loginMobileData);
+                                  } else if (otp.isEmpty && mpin.isNotEmpty)
+                                  {
+                                    print("mpin screen");
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.validateMpin,
+                                        arguments: loginMobileData);
+                                  }
+                                    
+                                }
+
+                                print("4545454 " + loginMobileData!.toString());
                                 /* Navigator.pushNamed(
                                     context, AppRoutes.validateMpin); */
                               },

@@ -94,18 +94,15 @@ class ValidateMpinViewModel extends ChangeNotifier {
     try {
       forgotMpinResponse = await _validateMpinRepository.ForgotMpin(
           forgotMpinPayload, bearerToken);
-      print("status message: " + response.statusMessage.toString());
+      print("status message: " + forgotMpinResponse.statusMessage.toString());
+      var mess = forgotMpinResponse.statusMessage.toString();
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
-        /* if (response.data != null) {
-          mpinData = response.data!;
-        } */
-        AppToast().showToast(response.statusMessage.toString());
-        //Navigator.pushNamed(context, AppRoutes.login);
-        //return mpinData;
+          AppToast().showToast(mess);
+        
       } else {
         EasyLoading.dismiss();
-        AppToast().showToast(response.statusMessage.toString());
+        AppToast().showToast(mess);
       }
     } on Exception catch (e) {
       print("Exception: " + e.toString());

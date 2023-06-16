@@ -72,10 +72,46 @@ class LoginMobileViewModel with ChangeNotifier {
           loginMobileData = response.data!;
           await LocalStoreHelper()
               .writeTheData(SharedPrefConstants.mPin, loginMobileData!.mpin);
-          await LocalStoreHelper()
-              .writeTheData(SharedPrefConstants.userId.toString(), loginMobileData!.userId);
-              await LocalStoreHelper()
-              .writeTheData(SharedPrefConstants.bearerToken, loginMobileData!.authToken);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.userId.toString(), loginMobileData!.userId);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.bearerToken, loginMobileData!.authToken);
+
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.officeCode, loginMobileData!.officeCode);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.otpMobile, loginMobileData!.otpMobile);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.bloodGroup, loginMobileData!.bloodGroup);
+
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.photoPath, loginMobileData!.photoPath);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.designation, loginMobileData!.designation);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.deviceId, loginMobileData!.deviceId);
+
+              await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.email, loginMobileData!.email);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.employeeType, loginMobileData!.employeeType);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.gender, loginMobileData!.gender);
+
+              await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.latitude, loginMobileData!.latitude);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.longitude, loginMobileData!.longitude);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.locationId, loginMobileData!.locationId);
+
+              await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.radius, loginMobileData!.radius);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.sessionToken, loginMobileData!.sessionToken);
+          await LocalStoreHelper().writeTheData(
+              SharedPrefConstants.roleId, loginMobileData!.roleId);
+             
         }
 
         //Navigator.pushReplacementNamed(context, AppRoutes.validateMpin);
