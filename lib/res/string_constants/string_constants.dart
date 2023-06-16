@@ -29,5 +29,20 @@ class AppStrings {
   static const String mpin_length_validate = "MPIN length should be 4";
   static const String mpin_empty = "MPIN can't be empty";
   static const String mpin_invalid = "MPIN invalid";
-  // static const String ptin_number = "PTIN Number";
+  static const String attendance = "Attendance";
+  static const String apply_leave = "Apply Leave";
+  static const String raise_grievance = "Raise Grievance";
+  static const String leave_report = "Leave Report";
+  static const String grievance_report = "Grievance Report";
+  static const String pay_slip = "Pay Slip";
+  // static const String apply_leave = "Apply Leave";
+  // static const String apply_leave = "Apply Leave";
+  // static const String apply_leave = "Apply Leave";
+  // static const String apply_leave = "Apply Leave";
+  // static const String apply_leave = "Apply Leave";
+  // static const String apply_leave = "Apply Leave";
+  // static const String apply_leave = "Apply Leave";
+  // static const String apply_leave = "Apply Leave";
+  // static const String apply_leave = "Apply Leave";
+  // static const String apply_leave = "Apply Leave";
 }

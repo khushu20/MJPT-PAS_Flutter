@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Routes/App_routes.dart';
+import '../app_colors/app_colors.dart';
 import '../constants/image_constants.dart';
 
 // ignore: must_be_immutable
@@ -15,14 +16,14 @@ class BaseScaffold extends StatefulWidget {
       this.titleName,
       this.color,
       this.extendBodyBehindAppBar,
-      this.vis,
+      this.bottomSheetVis,
       this.drawerContent,
       this.AppBarvis,
-      this.appBarSize, this.backArrowFlag, this.sidebarVis});
+      this.appBarSize, this.backArrowFlag, this.sidebarVis, this.backgroundImageVisible});
   final Widget? child;
   final Widget? bottomsheet;
   final bool? resize;
-  final bool? vis;
+  final bool? bottomSheetVis;
   final Key? key;
   final bool? sidebarVis;
   final bool? AppBarvis;
@@ -33,6 +34,7 @@ class BaseScaffold extends StatefulWidget {
   final Widget? drawerContent;
   final String? routeName;
   final String? titleName;
+  final bool? backgroundImageVisible;
   Color? color;
   final double? appBarSize;
   @override
@@ -41,12 +43,6 @@ class BaseScaffold extends StatefulWidget {
 class _BaseScaffoldState extends State<BaseScaffold> {
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      /* backgroundImage = await LocalStoreHelper()
-          .readTheData(SharedPrefConstants.backgroundImage);
-      print("sdfbhbdsjdfhs347883 $themeColor");
-      setState(() {}); */
-    });
   }
 
   Color? themeColor;
@@ -63,7 +59,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       key: widget.key,
       //endDrawer: widget.endDrawer,
       resizeToAvoidBottomInset: widget.resize,
-      bottomSheet: widget.vis == true
+      bottomSheet: widget.bottomSheetVis == true
           ? Image.asset(
           AssetPath.footer,
           width: double.infinity,
@@ -76,14 +72,13 @@ class _BaseScaffoldState extends State<BaseScaffold> {
               child: AppBar(
                 leading: IconButton(
                     onPressed: () {
-                      // ProviderForPropertyTax.navigate(context, AppRoutes.dashboard);
                       widget.backArrowFlag == true ? Navigator.pushNamed(context, AppRoutes.login) 
                       :
                       Navigator.pop(context);
                     },
                     icon: Icon(
                       Icons.arrow_back,
-                      color: Colors.black,
+                      color: AppColors.white,
                     )),
                 actions: [
                   IconButton(
@@ -93,15 +88,15 @@ class _BaseScaffoldState extends State<BaseScaffold> {
                       },
                       icon: Icon(
                         Icons.home,
-                        color: Colors.black,
+                        color: AppColors.white,
                       ))
                 ],
                 centerTitle: true,
-                backgroundColor: Colors.white,
+                backgroundColor: AppColors.PRIMARY_COLOR_DARK,
                 title: Text(
                   widget.titleName ?? '',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.white,
                   ),
                 ),
               ),
@@ -110,17 +105,21 @@ class _BaseScaffoldState extends State<BaseScaffold> {
               preferredSize: Size.fromHeight(widget.appBarSize ?? 40),
               child: widget.appBar ?? Container(color: Colors.transparent,),
             ),
-      body: Container(
-        //margin: EdgeInsets.only(bottom: 25),
+      body: widget.backgroundImageVisible == true
+          ? Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(AssetPath.bg_image),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: widget.child,
+            )
+          :
+      Container(
         height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: //SvgPicture.asset(AssetPath.bg),
-            AssetImage(AssetPath.bg_image),
-            // AssetImage("assets/zoo_bg_transparent.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
+        color: AppColors.white,
         child: widget.child,
       ),
     );
