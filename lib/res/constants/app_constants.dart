@@ -2,6 +2,7 @@ import 'package:image_picker/image_picker.dart';
 
 class AppConstants {
   AppConstants._();
+    static String version_number = '1.0';
   static bool flag = false;
   static bool isDialogOpen = false;
   static bool mosquito_flag = false;

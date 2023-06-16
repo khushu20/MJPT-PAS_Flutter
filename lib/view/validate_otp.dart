@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mjpt_pas/model/login_mobile_response.dart';
 import 'package:mjpt_pas/res/Routes/App_routes.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 import '../res/constants/image_constants.dart';
@@ -160,4 +164,10 @@ class ValidateOtp extends StatelessWidget {
       ),
     );
   }
+ Future<LoginData> getSavedInfo()async{
+ SharedPreferences preferences = await SharedPreferences.getInstance();
+ Map<String,dynamic>userMap = jsonDecode(preferences.getString("login")??"");
+  LoginData user = LoginData.fromJson(userMap);
+  return user;
+ }
 }

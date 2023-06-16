@@ -2,7 +2,7 @@ class LoginMobileResponse {
   bool? success;
   String? statusMessage;
   int? statusCode;
-  Data? data;
+  LoginData? data;
   bool? paginated;
 
   LoginMobileResponse(
@@ -16,7 +16,7 @@ class LoginMobileResponse {
     success = json['success'];
     statusMessage = json['status_Message'];
     statusCode = json['status_Code'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new LoginData.fromJson(json['data']) : null;
     paginated = json['paginated'];
   }
 
@@ -33,7 +33,7 @@ class LoginMobileResponse {
   }
 }
 
-class Data {
+class LoginData {
   int? employeeId;
   int? userId;
   String? postId;
@@ -59,7 +59,7 @@ class Data {
   String? sessionToken;
   int? roleId;
 
-  Data(
+  LoginData(
       {this.employeeId,
       this.userId,
       this.postId,
@@ -86,7 +86,7 @@ class Data {
       this.roleId
       });
 
-  Data.fromJson(Map<String, dynamic> json) {
+  LoginData.fromJson(Map<String, dynamic> json) {
     employeeId = json['employeeId'];
     userId = json['userId'];
     postId = json['postId'];

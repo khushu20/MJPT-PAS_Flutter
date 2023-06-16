@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -9,11 +11,14 @@ import 'package:mjpt_pas/res/components/reusable%20widgets/app_toast.dart';
 import 'package:mjpt_pas/res/string_constants/string_constants.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:mjpt_pas/utils/deviceid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../data/local_store_helper.dart';
 import '../encryption/aes_encrption.dart';
 import '../encryption/aes_encrption.dart';
 import '../model/login_mobile_response.dart';
 import '../res/Routes/App_routes.dart';
+import '../res/app_alerts/custom_error_alert.dart';
+import '../res/constants/image_constants.dart';
 import '../res/constants/shared_pref_consts.dart';
 
 class LoginMobileViewModel with ChangeNotifier {
@@ -23,10 +28,10 @@ class LoginMobileViewModel with ChangeNotifier {
   String? device_type;
   String? en_mobile;
   String? dec_mobile;
-  LoginMobileResponse response = LoginMobileResponse();
-  Data? loginMobileData;
+  LoginMobileResponse _loginMobileResponse = LoginMobileResponse();
+  LoginData? loginMobileData;
 
-  LoginMobileValidation(String mobileNumber, context) async {
+  loginMobileValidation(String mobileNumber, context) async {
     if (mobileNumber.isEmpty) {
       AppToast().showToast(AppStrings.mobilenumber_empty);
       return false;
@@ -38,7 +43,7 @@ class LoginMobileViewModel with ChangeNotifier {
       return false;
     } else {
       //LoginMobileViewModel viewModel = LoginMobileViewModel();
-      en_mobile = AesEncription().encryption(mobileNumber);
+
       dec_mobile = AesEncription().decryption(en_mobile ?? '');
       print("encrypted mobile: " + en_mobile!);
       print("decrypted mobile: " + dec_mobile!);
@@ -47,7 +52,8 @@ class LoginMobileViewModel with ChangeNotifier {
     }
   }
 
-  loginMobileService<Data>(context) async {
+  loginMobileService<Data>(context, String mobile) async {
+    en_mobile = AesEncription().encryption(mobile);
     EasyLoading.show(status: 'loading...', maskType: EasyLoadingMaskType.black);
     device_id = await utils.getDeviceId() ?? '';
     device_type = await utils.getDeviceType() ?? '';
@@ -64,64 +70,88 @@ class LoginMobileViewModel with ChangeNotifier {
     );
 
     try {
-      response = await _loginMobileRepository.loginMobile(loginMobilePayload);
-      print("status message: " + response.statusMessage.toString());
-      if (response.statusMessage == ApiErrorCodes.status_Message) {
-        EasyLoading.dismiss();
-        if (response.data != null) {
-          loginMobileData = response.data!;
-          await LocalStoreHelper()
-              .writeTheData(SharedPrefConstants.mPin, loginMobileData!.mpin);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.userId.toString(), loginMobileData!.userId);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.bearerToken, loginMobileData!.authToken);
+      _loginMobileResponse =
+          await _loginMobileRepository.loginMobile(loginMobilePayload);
+      print("status message: " + _loginMobileResponse.statusMessage.toString());
+      EasyLoading.dismiss();
+      if (_loginMobileResponse.statusCode == ApiErrorCodes.SUCCESS_code) {
+        if (_loginMobileResponse.data != null) {
+          loginMobileData = _loginMobileResponse.data;
+          saveLoginResponse("login", loginMobileData!);
+          /*  loginMobileData = await getLoginInfo("login");
+          print("object ${loginMobileData?.designation}"); */
 
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.officeCode, loginMobileData!.officeCode);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.otpMobile, loginMobileData!.otpMobile);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.bloodGroup, loginMobileData!.bloodGroup);
-
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.photoPath, loginMobileData!.photoPath);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.designation, loginMobileData!.designation);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.deviceId, loginMobileData!.deviceId);
-
-              await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.email, loginMobileData!.email);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.employeeType, loginMobileData!.employeeType);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.gender, loginMobileData!.gender);
-
-              await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.latitude, loginMobileData!.latitude);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.longitude, loginMobileData!.longitude);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.locationId, loginMobileData!.locationId);
-
-              await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.radius, loginMobileData!.radius);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.sessionToken, loginMobileData!.sessionToken);
-          await LocalStoreHelper().writeTheData(
-              SharedPrefConstants.roleId, loginMobileData!.roleId);
-             
+          if (loginMobileData?.otpMobile != null &&
+              loginMobileData?.mpin == "") {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.validateOtp,
+            );
+          } else if (loginMobileData?.mpin != null &&
+              loginMobileData?.mpin != "") {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.validateMpin,
+            );
+          }
+        } else {
+          CustomErrorAlert(
+              descriptions: _loginMobileResponse.statusMessage.toString(),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              Img: AssetPath.bg_image);
         }
 
-        //Navigator.pushReplacementNamed(context, AppRoutes.validateMpin);
         return loginMobileData;
+      } else if (_loginMobileResponse.statusCode ==
+          ApiErrorCodes.failure_code) {
+        CustomErrorAlert(
+            descriptions: _loginMobileResponse.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.bg_image);
+      } else if (_loginMobileResponse.statusCode ==
+          ApiErrorCodes.server_error_code) {
+        CustomErrorAlert(
+            descriptions: _loginMobileResponse.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.bg_image);
       } else {
         EasyLoading.dismiss();
-        AppToast().showToast(response.statusMessage.toString());
+        CustomErrorAlert(
+            descriptions: _loginMobileResponse.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.bg_image);
       }
     } on Exception catch (e) {
+      CustomErrorAlert(
+          descriptions: AppStrings.server_not_responding,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          Img: AssetPath.bg_image);
       print("Exception: " + e.toString());
     }
+  }
+
+  Future<void> saveLoginResponse(String key, LoginData loginData) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String user = jsonEncode(LoginData.fromJson(loginData.toJson()));
+    print("user: " + user);
+    pref.setString(key, user);
+  }
+
+  Future<LoginData> getLoginInfo(String key) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    Map<String, dynamic> userMap = jsonDecode(preferences.getString(key) ?? "");
+    LoginData user = LoginData.fromJson(userMap);
+    print("user... :${user.latitude} ");
+    return user;
   }
 }

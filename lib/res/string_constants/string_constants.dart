@@ -45,4 +45,7 @@ class AppStrings {
   // static const String apply_leave = "Apply Leave";
   // static const String apply_leave = "Apply Leave";
   // static const String apply_leave = "Apply Leave";
+  static const String plz_internet_check = "Please check your Internet Connection";
+  static const String server_not_responding = "Server Not Responding Please try Later...";
+  // static const String ptin_number = "PTIN Number";
 }
