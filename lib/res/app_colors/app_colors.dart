@@ -6,6 +6,7 @@ class AppColors {
   static const Color transparent = Colors.transparent;
   static const Color white = Colors.white;
   static const Color black = Colors.black;
+  static const Color green= Colors.green;
  
   static const MaterialColor navy = MaterialColor(
     0xFF162A69,
