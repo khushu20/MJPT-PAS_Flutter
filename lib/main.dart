@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:mjpt_pas/res/Routes/App_routes.dart';
 import 'package:mjpt_pas/res/routes/app_pages.dart';
+import 'package:mjpt_pas/viewmodel/apply_leave_view_model.dart';
 import 'package:mjpt_pas/viewmodel/login_mobile_view_model.dart';
 import 'package:mjpt_pas/viewmodel/login_view_model.dart';
 import 'package:mjpt_pas/viewmodel/update_mpin_viewmodel.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
         ChangeNotifierProvider(create: (_) =>UpdateMpinViewModel()),
         ChangeNotifierProvider(create: (_) =>ValidateMpinViewModel()),
-        // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
+        ChangeNotifierProvider(create: (_) =>ApplyLeaveViewModel()),
         // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
         // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
         // ChangeNotifierProvider(create: (_) =>LoginMobileViewModel()),
