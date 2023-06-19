@@ -1,38 +1,153 @@
 
 
-import 'package:encrypt/encrypt.dart' as encrypt;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mjpt_pas/encryption/aes_encrption.dart';
-import 'package:mjpt_pas/res/string_constants/string_constants.dart';
+import 'dart:convert';
 
-import '../res/Routes/App_routes.dart';
-import '../res/components/reusable widgets/app_toast.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:mjpt_pas/data/api_error_codes.dart';
+import 'package:mjpt_pas/data/local_store_helper.dart';
+import 'package:mjpt_pas/encryption/aes_encrption.dart';
+import 'package:mjpt_pas/model/login_mobile_payload.dart';
+import 'package:mjpt_pas/model/login_mobile_response.dart';
+import 'package:mjpt_pas/res/Routes/App_routes.dart';
+import 'package:mjpt_pas/res/app_alerts/custom_error_alert.dart';
+import 'package:mjpt_pas/res/constants/image_constants.dart';
+import 'package:mjpt_pas/res/constants/shared_pref_consts.dart';
+import 'package:mjpt_pas/res/string_constants/string_constants.dart';
+import 'package:mjpt_pas/utils/deviceid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+import '../repository/login_mobile_repository.dart';
 
 class LoginViewModel with ChangeNotifier {
-  final ENCRYPTION_KEY = "bXVzdGJlMTZieXRlc2tleQ==";
-  LoginValidation(String username, String password, context) async {
-    if (username.isEmpty) {
-      AppToast().showToast(AppStrings.username_empty);
-    } else if (password.isEmpty) {
-      AppToast().showToast(AppStrings.password_empty);
-    } else {
-      /* String en_pass = encryption(password);
-      String en_user = encryption(username);
-      String dec_pass = decryption(password);
-      String dec_user = decryption(username); */
-      //LoginViewModel viewModel = LoginViewModel(); // Create an instance
-      String en_pass = AesEncription().encryption(password);
-      String en_user = AesEncription().encryption(username);
-      String dec_pass = AesEncription().decryption(en_pass);
-      String dec_user = AesEncription().decryption(en_user);
-      print("encrypted password: " + en_pass);
-      print("encrypted username: " + en_user);
-      print("decrypted password: " + dec_pass);
-      print("decrypted username: " + dec_user);
-      //Navigator.pushReplacementNamed(context, AppRoutes.validateMpin);
+  final _loginMobileRepository = LoginMobileRepository();
+  final utils = Utils();
+  String? device_id="",device_type="",en_username="",en_password="";
+  LoginMobileResponse _loginMobileResponse = LoginMobileResponse();
+  LoginData? loginMobileData;
+
+    loginUserNameService(context, String username,String password) async {
+    en_username = AesEncription().encryption(username);
+    en_password = AesEncription().encryption(password);
+      print("en_username: $en_username" );
+       print("en_username: $en_password" );
+    EasyLoading.show(status: 'loading...', maskType: EasyLoadingMaskType.black);
+    device_id = await utils.getDeviceId() ?? '';
+    device_type = await utils.getDeviceType() ?? '';
+    final loginMobilePayload = LoginMobilePayload(
+      appName: AppStrings.appName,
+      deviceId: device_id,
+      deviceType: device_type,
+      fcmToken:
+          "dNnn-ap1TtepcrNZsCq_KH:APA91bEo5YCX8Jszi1fjqVxdIPJLqQljm3B9XCugwq1m9_Tt5qPigFvi0eD_vHxYsALtm7imXe6PglGsm73q5H0-UZ0FrVVGpzinP6SsGld0C08i0cz1ruIvfVxq_Ii8lRlS7i2h5HGn",
+      isMobileNoAuth: true,
+      mobileNumber: "",
+      password: en_password,
+      username: en_username
+    );
+
+    try {
+      _loginMobileResponse =
+          await _loginMobileRepository.loginMobile(loginMobilePayload);
+      print("status message: " + _loginMobileResponse.statusMessage.toString());
+      EasyLoading.dismiss();
+      if (_loginMobileResponse.statusCode == ApiErrorCodes.SUCCESS_code) {
+        if (_loginMobileResponse.data != null) {
+          loginMobileData = _loginMobileResponse.data;
+          saveLoginResponse(SharedPrefConstants.loginResponse, loginMobileData!);
+           await LocalStoreHelper().writeTheData(SharedPrefConstants.otpMobile, loginMobileData?.otpMobile);
+                  await LocalStoreHelper().writeTheData(SharedPrefConstants.mPin, loginMobileData?.mpin);
+                   await LocalStoreHelper().writeTheData(SharedPrefConstants.authToken,loginMobileData?.authToken);
+                   
+          /*  loginMobileData = await getLoginInfo(SharedPrefConstants.loginResponse);
+          print("object ${loginMobileData?.designation}"); */
+
+          if (loginMobileData?.otpMobile != null &&
+              loginMobileData?.mpin == "") {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.validateOtp,
+            );
+          } else if (loginMobileData?.mpin != null &&
+              loginMobileData?.mpin != "") {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.validateMpin,
+            );
+          }
+        } else {
+           showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: _loginMobileResponse.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
+        }
+
+        return loginMobileData;
+      } else if (_loginMobileResponse.statusCode ==
+          ApiErrorCodes.failure_code) {
+            showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: _loginMobileResponse.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
+        
+      } else if (_loginMobileResponse.statusCode ==
+          ApiErrorCodes.server_error_code) {
+         showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: _loginMobileResponse.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
+      } else {
+        EasyLoading.dismiss();
+        showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: _loginMobileResponse.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
+      }
+    } on Exception catch (e) {
+      showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: AppStrings.server_not_responding,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
     }
   }
 
+  Future<void> saveLoginResponse(String key, LoginData loginData) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String user = jsonEncode(LoginData.fromJson(loginData.toJson()));
+    print("user: " + user);
+    pref.setString(key, user);
+  }
+
+  Future<LoginData> getLoginInfo(String key) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    Map<String, dynamic> userMap = jsonDecode(preferences.getString(key) ?? "");
+    LoginData user = LoginData.fromJson(userMap);
+    print("user... :${user.latitude} ");
+    return user;
+  }
 }
+  
+
+

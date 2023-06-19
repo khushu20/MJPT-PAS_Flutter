@@ -1,13 +1,13 @@
-class ForgotMpinResponse {
+class UpdateMpinResponse {
   bool? success;
   String? statusMessage;
   int? statusCode;
   bool? paginated;
 
-  ForgotMpinResponse(
+  UpdateMpinResponse(
       {this.success, this.statusMessage, this.statusCode, this.paginated});
 
-  ForgotMpinResponse.fromJson(Map<String, dynamic> json) {
+  UpdateMpinResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     statusMessage = json['status_Message'];
     statusCode = json['status_Code'];

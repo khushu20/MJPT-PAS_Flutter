@@ -6,7 +6,6 @@ import 'package:mjpt_pas/res/app_alerts/custom_error_alert.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.dart';
-import 'package:mjpt_pas/utils/deviceid.dart';
 import 'package:mjpt_pas/utils/internet_check.dart';
 import 'package:mjpt_pas/viewmodel/login_mobile_view_model.dart';
 import 'package:provider/provider.dart';
@@ -106,22 +105,24 @@ class LoginMobile extends StatelessWidget {
                               onPressed: () async {
                                 bool isConnected = await InternetCheck()
                                     .hasInternetConnection();
-                                if (isConnected) {
-                                  if (mobileValidations()) {
-                                    loginMobileData =
-                                        await loginViewModel.loginMobileService(
-                                            context, _mobile.text.toString());
-                                  }
-                                } else {
-                                  CustomErrorAlert(
-                                      descriptions:
-                                          AppStrings.plz_internet_check,
-                                      onPressed: () {
-                                        Navigator.pop(context);
+                                if (mobileValidations()) {
+                                  if (isConnected) {
+                                    loginViewModel.loginMobileService(
+                                        context, _mobile.text.toString());
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return CustomErrorAlert(
+                                            descriptions:
+                                                AppStrings.plz_internet_check,
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            Img: AssetPath.error);
                                       },
-                                      Img: AssetPath.bg_image);
-                                /*   AppToast()
-                                      .showToast(AppStrings.plz_internet_check); */
+                                    );
+                                  }
                                 }
                               },
                             ),

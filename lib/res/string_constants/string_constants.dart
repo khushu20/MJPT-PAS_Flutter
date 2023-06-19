@@ -10,6 +10,18 @@ class AppStrings {
   static const String or = "OR";
   static const String mobileNo = "Mobile Number";
   static const String login_username_password = "Login with username and password";
+   static const String plz_enter_username = "Please enter Username";
+   static const String plz_enter_pwd = "Please enter Password";
+   static const String plz_enter_otp = "Please enter Otp";
+   static const String plz_enter_4digitotp = "Please enter 4 digits Otp";
+    static const String plz_enter_validotp = "Please enter Valid Otp";
+    static const String plz_enter_mpin = "Please enter Mpin";
+   static const String plz_enter_4digitMpin = "Please enter 4 digits Mpin";
+    static const String plz_enter_validmpin = "Please enter Valid Mpin";
+     static const String plz_enter_cmpin = "Please enter Confirm Mpin";
+   static const String plz_enter_4digitCMpin = "Please enter 4 digits Confirm Mpin";
+   
+    
   static const String validate_mpin = "Validate mPin";
   static const String not_you = "Not you?";
   static const String Forgot_mpin = "Forgot mPin?";
@@ -23,8 +35,8 @@ class AppStrings {
   static const String resend_otp = "Resend otp";
   static const String username_empty = "UserName can't be empty";
   static const String password_empty = "Password can't be empty";
-  static const String mobilenumber_empty = "MobileNumber can't be empty";
-  static const String mobilenumber_invalid = "MobileNumber Invalid";
+  static const String mobilenumber_empty = "Please enter Mobile No. ";
+  static const String mobilenumber_invalid = "Please enter valid Mobile No.";
   static const String appName = "MJPHRMS";
   static const String mpin_length_validate = "MPIN length should be 4";
   static const String mpin_empty = "MPIN can't be empty";

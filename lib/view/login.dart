@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mjpt_pas/res/app_alerts/custom_error_alert.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textfield.dart';
@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 
 import '../res/Routes/App_routes.dart';
 import '../res/app_colors/app_colors.dart';
+import '../res/components/reusable widgets/app_toast.dart';
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
+import '../utils/internet_check.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -18,12 +20,11 @@ class Login extends StatelessWidget {
   TextEditingController _password = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final ProviderForLogin =
-        Provider.of<LoginViewModel>(context, listen: false);
+    final loginViewModel = Provider.of<LoginViewModel>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
-        color:AppColors.PRIMARY_COLOR_DARK,
+        color: AppColors.PRIMARY_COLOR_DARK,
         height: MediaQuery.of(context).size.height * 0.06,
         child: SvgPicture.asset(
           AssetPath.footer,
@@ -81,16 +82,18 @@ class Login extends StatelessWidget {
                             AppInputTextfield(
                               texteditingcontroller: _username,
                               labeltext: AppStrings.userName,
+                              maxlength: 50,
                               input_type: TextInputType.name,
-                              inputFormatters: [
+                              /*  inputFormatters: [
                                 new FilteringTextInputFormatter.allow(
                                     RegExp(r'[a-zA-Z\s]')),
-                              ],
+                              ], */
                             ),
                             AppInputTextfield(
                               texteditingcontroller: _password,
                               labeltext: AppStrings.password,
                               input_type: TextInputType.name,
+                              maxlength: 50,
                               obsecuretext: true,
                             ),
                             SizedBox(
@@ -99,12 +102,27 @@ class Login extends StatelessWidget {
                             AppInputButtonComponent(
                               buttonText: AppStrings.login,
                               //color: Color.fromARGB(255, 63, 16, 10),
-                              onPressed: () {
-                                print("ssdd");
+                              onPressed: () async {
+                                if (userValidations()) {
+                                  bool isConnected = await InternetCheck()
+                                      .hasInternetConnection();
+                                  if (isConnected) {
+                                    loginViewModel.loginUserNameService(context,_username.text.toString(),_password.text.toString());
+                                  }else{
+                                     showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: AppStrings.plz_internet_check,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
+                                  }
+                                }
+                                /* print("ssdd");
                                 ProviderForLogin.LoginValidation(
                                     _username.text, _password.text, context);
-                                /* Navigator.pushNamed(
-                                    context, AppRoutes.validateMpin); */
+                              */
                               },
                             ),
                             SizedBox(
@@ -133,5 +151,16 @@ class Login extends StatelessWidget {
             ]),
       ),
     );
+  }
+
+  bool userValidations() {
+    if (_username.text.isEmpty) {
+      AppToast().showToast(AppStrings.plz_enter_username);
+      return false;
+    } else if (_password.text.isEmpty) {
+      AppToast().showToast(AppStrings.plz_enter_pwd);
+      return false;
+    }
+    return true;
   }
 }

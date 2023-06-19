@@ -1,10 +1,10 @@
-class ForgotMpinPayload {
+class UpdateMpinPayload {
   String? appName;
   GetMpinUserModel? userModel;
 
-  ForgotMpinPayload({this.appName, this.userModel});
+  UpdateMpinPayload({this.appName, this.userModel});
 
-  ForgotMpinPayload.fromJson(Map<String, dynamic> json) {
+  UpdateMpinPayload.fromJson(Map<String, dynamic> json) {
     appName = json['appName'];
     userModel = json['userModel'] != null
         ? new GetMpinUserModel.fromJson(json['userModel'])

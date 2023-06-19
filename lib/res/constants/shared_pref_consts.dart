@@ -8,6 +8,8 @@ class SharedPrefConstants {
   static const int userId = 0;
   static const String bearerToken = 'bearerToken';
   static const String postId = 'postId';
+    static const String authToken = 'authToken';
+        static const String appName = 'appName';
   static const String designation = 'designation';
   static const String userName = 'userName';
   static const String photoPath = 'photoPath';

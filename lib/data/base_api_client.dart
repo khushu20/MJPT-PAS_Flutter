@@ -7,7 +7,7 @@ import '../res/constants/api_constants.dart';
 
 
 
-class baseApiClient {
+class BaseApiClient {
   late final Dio _client = Dio(
     BaseOptions(baseUrl: ApiConstants.baseUrlHRMS),
   );

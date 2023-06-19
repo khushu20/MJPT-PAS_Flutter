@@ -1,13 +1,13 @@
 class ValidateMpinPayload {
   String? appName;
-  UserModel? userModel;
+  ValidateMpinModel? userModel;
 
   ValidateMpinPayload({this.appName, this.userModel});
 
   ValidateMpinPayload.fromJson(Map<String, dynamic> json) {
     appName = json['appName'];
     userModel = json['userModel'] != null
-        ? new UserModel.fromJson(json['userModel'])
+        ? new ValidateMpinModel.fromJson(json['userModel'])
         : null;
   }
 
@@ -21,15 +21,15 @@ class ValidateMpinPayload {
   }
 }
 
-class UserModel {
+class ValidateMpinModel {
   String? mobileNumber;
   String? mpin;
   int? userId;
   String? userName;
 
-  UserModel({this.mobileNumber, this.mpin, this.userId, this.userName});
+  ValidateMpinModel({this.mobileNumber, this.mpin, this.userId, this.userName});
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  ValidateMpinModel.fromJson(Map<String, dynamic> json) {
     mobileNumber = json['mobileNumber'];
     mpin = json['mpin'];
     userId = json['userId'];

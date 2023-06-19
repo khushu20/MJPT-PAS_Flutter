@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mjpt_pas/res/app_alerts/custom_error_alert.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
+import 'package:mjpt_pas/res/components/reusable%20widgets/app_toast.dart';
+import 'package:mjpt_pas/utils/internet_check.dart';
+import 'package:mjpt_pas/viewmodel/update_mpin_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 import '../res/app_colors/app_colors.dart';
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
-
-
 
 class SetMpin extends StatelessWidget {
   SetMpin({super.key});
@@ -16,6 +19,8 @@ class SetMpin extends StatelessWidget {
   TextEditingController _confirmMpin = TextEditingController();
   @override
   Widget build(BuildContext context) {
+     final updateMpinViewmodel =
+        Provider.of<UpdateMpinViewModel>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
@@ -30,9 +35,7 @@ class SetMpin extends StatelessWidget {
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: //SvgPicture.asset(AssetPath.bg),
-                AssetImage(AssetPath.bg_image),
-            // AssetImage("assets/zoo_bg_transparent.png"),
+            image: AssetImage(AssetPath.bg_image),
             fit: BoxFit.cover,
           ),
         ),
@@ -50,9 +53,6 @@ class SetMpin extends StatelessWidget {
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       height: MediaQuery.of(context).size.height * 0.65,
-                      /* decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(60),
-                      ), */
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
@@ -164,21 +164,36 @@ class SetMpin extends StatelessWidget {
                               onComplete: (mpinOutput) {
                                 // Your logic with pin code
                                 print(mpinOutput);
-                                /* widget.textEditingController.text = mpinOutput;
-                                otp_textcontrol =
-                                    widget.textEditingController.text;
-                                print(
-                                    'otp val ${widget.textEditingController.text}');
-                                print('otp val is ${otp_textcontrol}'); */
                               },
                             ),
                             SizedBox(
                               height: 10,
                             ),
                             AppInputButtonComponent(
-                              onPressed: () {},
+                              onPressed: () async {
+                                   bool isConnected = await InternetCheck()
+                                    .hasInternetConnection();
+                                if (mpinValidations()) {
+                                  if (isConnected) {
+                                    updateMpinViewmodel.updateMpinService(
+                                        context, _confirmMpin.text.toString(),"");
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return CustomErrorAlert(
+                                            descriptions:
+                                                AppStrings.plz_internet_check,
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            Img: AssetPath.error);
+                                      },
+                                    );
+                                  }
+                                }
+                              },
                               buttonText: AppStrings.confirm,
-                              //color: Color.fromARGB(255, 63, 16, 10),
                             )
                           ],
                         ),
@@ -188,5 +203,34 @@ class SetMpin extends StatelessWidget {
             ]),
       ),
     );
+  }
+
+  bool mpinValidations() {
+    if (_mpin.text.isEmpty) {
+       AppToast().showToast(AppStrings.plz_enter_mpin);
+       return false;
+    } else if (_mpin.text.length != 4) {
+             AppToast().showToast(AppStrings.plz_enter_4digitMpin);
+
+       return false;
+
+    }  else if (_mpin.text.toString()=="0000") {
+             AppToast().showToast(AppStrings.plz_enter_validmpin);
+
+       return false;
+    }
+    else if (_confirmMpin.text.isEmpty) {
+                   AppToast().showToast(AppStrings.plz_enter_cmpin);
+
+       return false;
+    } else if (_confirmMpin.text.length != 4) {
+        AppToast().showToast(AppStrings.plz_enter_4digitCMpin);
+       return false;
+    } else if (_mpin.text.toString() != _confirmMpin.text.toString()) {
+             AppToast().showToast(AppStrings.plz_enter_validmpin);
+
+      return false;
+    }
+    return true;
   }
 }

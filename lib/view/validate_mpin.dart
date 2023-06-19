@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mjpt_pas/res/Routes/App_routes.dart';
+import 'package:mjpt_pas/res/app_alerts/custom_error_alert.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
+import 'package:mjpt_pas/utils/internet_check.dart';
+import 'package:mjpt_pas/viewmodel/update_mpin_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../data/local_store_helper.dart';
 import '../model/login_mobile_response.dart';
 import '../model/validate_mpin_response.dart';
 import '../res/app_colors/app_colors.dart';
+import '../res/components/reusable widgets/app_toast.dart';
 import '../res/constants/image_constants.dart';
 import '../res/constants/shared_pref_consts.dart';
 import '../res/string_constants/string_constants.dart';
@@ -28,17 +32,38 @@ class _ValidateMpinState extends State<ValidateMpin> {
   LoginData? args;
 
   String? entered_mPin;
-
+  String? mobileOtp;
+  LoginData? loginMobileData;
   List<ValidateMpinData>? validateMpinData;
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final validateMpinViewmodel = Provider.of<ValidateMpinViewModel>(
+        context, listen: false
+      );
+      loginMobileData = await validateMpinViewmodel
+          .getLoginInfo(SharedPrefConstants.loginResponse);
+      print("11111111 ${loginMobileData?.gender}");
+      //loginMobileData = await getLoginInfo(SharedPrefConstants.loginResponse);
+      String otp =
+          await LocalStoreHelper().readTheData(SharedPrefConstants.otpMobile);
+
+      setState(() {
+        mobileOtp = otp;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context)!.settings.arguments as LoginData;
-    final ProviderForValidateMpin =
+    //args = ModalRoute.of(context)!.settings.arguments as LoginData;
+    final validateMpinViewmodel =
         Provider.of<ValidateMpinViewModel>(context, listen: false);
+    final updateMpinViewmodel =
+        Provider.of<UpdateMpinViewModel>(context, listen: false);
 
-    print("111111 ${args!.otpMobile}");
-    print("222222 ${args!.authToken}");
+   
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
@@ -160,10 +185,12 @@ class _ValidateMpinState extends State<ValidateMpin> {
                                     )),
                                 GestureDetector(
                                     onTap: () async {
-                                      await ProviderForValidateMpin.forgotMpin(
+                                      updateMpinViewmodel.updateMpinService(
+                                          context, "0000", "reset");
+                                      /* await ProviderForValidateMpin.forgotMpin(
                                           context);
                                       Navigator.pushNamed(
-                                          context, AppRoutes.login);
+                                          context, AppRoutes.login); */
                                     },
                                     child: AppInputText(
                                       text: AppStrings.Forgot_mpin,
@@ -176,33 +203,31 @@ class _ValidateMpinState extends State<ValidateMpin> {
                             ),
                             AppInputButtonComponent(
                               onPressed: () async {
-                                setState(() {
-                                  _mpin.text = '';
-                                });
-                                bool flag =
-                                    ProviderForValidateMpin.mpinValidate(
-                                        entered_mPin ?? '', context);
-                                var mPin = await LocalStoreHelper()
-                                    .readTheData(SharedPrefConstants.mPin);
-                                var userid = await LocalStoreHelper()
-                                    .readTheData(
-                                        SharedPrefConstants.userId.toString());
-                                print("mPin $mPin");
-                                print("userid $userid");
-                                if (flag == true) {
-                                  validateMpinData =
-                                      await ProviderForValidateMpin.mpinMatch(
-                                          entered_mPin ?? '',
-                                          mPin,
-                                          args!.userId ?? 0,
-                                          args!.authToken ?? '',
-                                          context);
+                                bool isConnected = await InternetCheck()
+                                    .hasInternetConnection();
+                                if (mpinValidations()) {
+                                  if (isConnected) {
+                                    validateMpinViewmodel.validateMpinService(
+                                        context,
+                                        _mpin.text.toString(),
+                                        loginMobileData);
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return CustomErrorAlert(
+                                            descriptions:
+                                                AppStrings.plz_internet_check,
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            Img: AssetPath.error);
+                                      },
+                                    );
+                                  }
                                 }
-                                
-                                
-                                print(
-                                    "roleName ${validateMpinData![0].roleName}");
                               },
+
                               buttonText: AppStrings.validate,
                               //color:Color.fromARGB(255, 63, 16, 10),
                             )
@@ -214,5 +239,17 @@ class _ValidateMpinState extends State<ValidateMpin> {
             ]),
       ),
     );
+  }
+
+  bool mpinValidations() {
+    if (_mpin.text.isEmpty) {
+      AppToast().showToast(AppStrings.plz_enter_mpin);
+      return false;
+    } else if (_mpin.text.length != 4) {
+      AppToast().showToast(AppStrings.plz_enter_4digitMpin);
+
+      return false;
+    }
+    return true;
   }
 }

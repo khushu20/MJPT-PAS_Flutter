@@ -1,113 +1,118 @@
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:mjpt_pas/encryption/aes_encrption.dart';
-import 'package:mjpt_pas/model/forgot_mpin_payload.dart';
+
+import 'package:mjpt_pas/model/login_mobile_response.dart';
+
+import 'package:mjpt_pas/model/validate_mpin_payload.dart';
 import 'package:mjpt_pas/repository/validate_mpin_repository.dart';
-import 'package:mjpt_pas/res/components/reusable%20widgets/app_toast.dart';
-import 'package:mjpt_pas/res/routes/app_routes.dart';
+import 'package:mjpt_pas/res/app_alerts/custom_error_alert.dart';
+import 'package:mjpt_pas/res/constants/image_constants.dart';
+import 'package:mjpt_pas/res/routes/App_routes.dart';
+
 import 'package:mjpt_pas/res/string_constants/string_constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/api_error_codes.dart';
-import '../data/local_store_helper.dart';
-import '../model/forgot_mpin_response.dart';
-import '../model/validate_mpin_payload.dart';
+
+
+
 import '../model/validate_mpin_response.dart';
-import '../res/constants/shared_pref_consts.dart';
 
 class ValidateMpinViewModel extends ChangeNotifier {
   final _validateMpinRepository = ValidateMpinRepository();
   ValidateMpinResponse response = ValidateMpinResponse();
-  ForgotMpinResponse forgotMpinResponse = ForgotMpinResponse();
-  String? en_enteredMpin;
-  List<ValidateMpinData>? mpinData;
-  mpinValidate(String enteredMpin, context) {
-    if (enteredMpin.length != 4) {
-      AppToast().showToast(AppStrings.mpin_length_validate);
-      return false;
-    } else if (enteredMpin.isEmpty) {
-      AppToast().showToast(AppStrings.mpin_empty);
-      return false;
-    } else {
-      return true;
-    }
-  }
 
-  mpinMatch(String enteredMpin, String confirmMpin, int userId,
-      String bearerToken, context) async {
-    if (enteredMpin != confirmMpin) {
-      AppToast().showToast(AppStrings.mpin_invalid);
-      return false;
-    } else {
-      en_enteredMpin = AesEncription().encryption(enteredMpin);
-      var MobNumber = await LocalStoreHelper()
-          .readTheData(SharedPrefConstants.mobileNumber);
 
-      final validateMpinPayload = ValidateMpinPayload(
-          appName: AppStrings.appName,
-          userModel: UserModel(
-              mobileNumber: MobNumber,
-              mpin: en_enteredMpin,
-              userId: userId,
-              userName: ""));
-      try {
-        response = await _validateMpinRepository.validateMpin(
-            validateMpinPayload, bearerToken);
-        print("status message: " + response.statusMessage.toString());
-        if (response.statusMessage == ApiErrorCodes.mpin_status_Message) {
+  LoginData? loginMobileData;
+ 
+
+  validateMpinService(context, String enteredMpin, LoginData? loginMobileData) async {
+    /* oginMobileData = await getLoginInfo(SharedPrefConstants.loginResponse);
+    print("object ${loginMobileData?.designation}"); */
+    String en_mpin = AesEncription().encryption(enteredMpin);
+    var validateMpinPayload = ValidateMpinPayload();
+    validateMpinPayload.appName = AppStrings.appName;
+    var validateMpinModel = ValidateMpinModel();
+    validateMpinModel.mobileNumber = loginMobileData?.mobileNumber;
+    validateMpinModel.mpin = en_mpin;
+     validateMpinModel.userId = loginMobileData?.userId;
+      validateMpinModel.userName = loginMobileData?.userName;
+      validateMpinPayload.userModel = validateMpinModel;
+  
+    
+        try {
+          response = await _validateMpinRepository.validateMpin(
+              validateMpinPayload, loginMobileData?.authToken);
           EasyLoading.dismiss();
-          if (response.data != null) {
-            mpinData = response.data!;
-          }
-          print("mpinData: " + mpinData.toString());
-          return mpinData;
-        } else {
-          EasyLoading.dismiss();
-          AppToast().showToast(response.statusMessage.toString());
-        }
-      } on Exception catch (e) {
-        print("Exception: " + e.toString());
-      }
-      return true;
-    }
-  }
-
-  forgotMpin(context) async {
-    /* if (enteredMpin != confirmMpin) {
-      AppToast().showToast(AppStrings.mpin_invalid);
-      return false;
-    } 
-    else { */
-    int userId = await LocalStoreHelper()
-        .readTheData(SharedPrefConstants.userId.toString());
-    var MobNumber =
-        await LocalStoreHelper().readTheData(SharedPrefConstants.mobileNumber);
-    String bearerToken =
-        await LocalStoreHelper().readTheData(SharedPrefConstants.bearerToken);
-    final forgotMpinPayload = ForgotMpinPayload(
-        appName: AppStrings.appName,
-        userModel: GetMpinUserModel(
-            mobileNumber: MobNumber,
-            mpin: "0000",
-            userId: userId,
-            userName: ""));
-    try {
-      forgotMpinResponse = await _validateMpinRepository.ForgotMpin(
-          forgotMpinPayload, bearerToken);
-      print("status message: " + forgotMpinResponse.statusMessage.toString());
-      var mess = forgotMpinResponse.statusMessage.toString();
-      if (response.statusCode == 200) {
-        EasyLoading.dismiss();
-          AppToast().showToast(mess);
+      if (response.statusCode == ApiErrorCodes.SUCCESS_code) {
         
+ Navigator.pushNamed(
+              context,
+              AppRoutes.LeaveReport,
+            );
+        
+        
+        
+      } else if (response.statusCode ==
+          ApiErrorCodes.failure_code) {
+            showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: response.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
+        
+      } else if (response.statusCode ==
+          ApiErrorCodes.server_error_code) {
+      
+            showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: response.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
       } else {
         EasyLoading.dismiss();
-        AppToast().showToast(mess);
+       showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: response.statusMessage.toString(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
       }
     } on Exception catch (e) {
-      print("Exception: " + e.toString());
+      showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions: AppStrings.server_not_responding,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
     }
-    return true;
-    //}
+       
+      }
+      
+      Future<LoginData> getLoginInfo(String key) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    Map<String, dynamic> userMap = jsonDecode(preferences.getString(key) ?? "");
+    LoginData user = LoginData.fromJson(userMap);
+    print("user... :${user.latitude} ");
+    return user;
   }
-}
+    }
+
+     
+  
+
+  
+

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mjpt_pas/model/login_mobile_payload.dart';
 import 'package:mjpt_pas/model/login_mobile_response.dart';
+import 'package:mjpt_pas/model/update_mpin_payload.dart';
+import 'package:mjpt_pas/model/update_mpin_response.dart';
 
 import '../data/base_api_client.dart';
 import '../res/constants/api_constants.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-class LoginMobileRepository {
+class UpdateMpinRepository {
   final _baseClient = BaseApiClient();
-  Future<LoginMobileResponse> loginMobile(LoginMobilePayload payload) async {
-    final response = await _baseClient.postCall(
-        ApiConstants.endpoint_login_mobile, payload.toJson());
+  Future<UpdateMpinResponse> updateMpin(UpdateMpinPayload payload,String ?authToken) async {
+    final response = await _baseClient.postAuthorizationCall(
+        ApiConstants.endpoint_getmPin, payload.toJson(),BearerToken: authToken);
     if (response == null) {
       showDialog(
         barrierDismissible: false,
@@ -32,7 +34,7 @@ class LoginMobileRepository {
       );
       print("Null is returning");
     } else {
-      return LoginMobileResponse.fromJson(response as Map<String, dynamic>);
+      return UpdateMpinResponse.fromJson(response as Map<String, dynamic>);
     }
     throw {
       print("throw")

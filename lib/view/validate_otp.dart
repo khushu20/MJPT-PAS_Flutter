@@ -3,19 +3,30 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mjpt_pas/data/local_store_helper.dart';
 import 'package:mjpt_pas/model/login_mobile_response.dart';
 import 'package:mjpt_pas/res/Routes/App_routes.dart';
+import 'package:mjpt_pas/res/app_alerts/custom_error_alert.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_text.dart';
+import 'package:mjpt_pas/res/components/reusable%20widgets/app_toast.dart';
+import 'package:mjpt_pas/res/constants/shared_pref_consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 import '../res/constants/image_constants.dart';
 import '../res/string_constants/string_constants.dart';
 
-class ValidateOtp extends StatelessWidget {
+class ValidateOtp extends StatefulWidget {
   ValidateOtp({super.key});
   TextEditingController _otp = TextEditingController();
+  @override
+  State<ValidateOtp> createState() => _ValidateOtpState();
+}
+
+class _ValidateOtpState extends State<ValidateOtp> {
+  TextEditingController _otp = TextEditingController();
+  String mobileOtp = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,8 +149,22 @@ class ValidateOtp extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                     onTap: () {
-                                      /* Navigator.pushNamed(
-                                          context, AppRoutes.login); */
+                                      if(!mobileOtp.isEmpty){
+                                        if(mobileOtp==_otp.text.toString()){
+                                           Navigator.pushNamed(
+                                          context, AppRoutes.setMpin);
+                                        }else{
+                                           showDialog(context: context, builder:(context) {
+              return CustomErrorAlert(
+            descriptions:AppStrings.plz_enter_validotp ,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            Img: AssetPath.error);
+            },);
+                                        }
+                                      }
+                                      /*  */
                                     },
                                     child: AppInputText(
                                       text: AppStrings.resend_otp,
@@ -164,10 +189,29 @@ class ValidateOtp extends StatelessWidget {
       ),
     );
   }
- Future<LoginData> getSavedInfo()async{
- SharedPreferences preferences = await SharedPreferences.getInstance();
- Map<String,dynamic>userMap = jsonDecode(preferences.getString("login")??"");
-  LoginData user = LoginData.fromJson(userMap);
-  return user;
- }
+
+  bool otpValidations() {
+    if (_otp.text.isEmpty) {
+      AppToast().showToast(AppStrings.plz_enter_otp);
+      return false;
+    } else if (_otp.text.length!=4) {
+      AppToast().showToast(AppStrings.plz_enter_4digitotp);
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      String otp =
+          await LocalStoreHelper().readTheData(SharedPrefConstants.otpMobile);
+
+      setState(() {
+        mobileOtp = otp;
+      });
+    });
+  }
 }
