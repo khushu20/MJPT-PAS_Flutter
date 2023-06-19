@@ -6,6 +6,7 @@ class AppStrings {
   static const String userName = "UserName";
   static const String password = "Password";
   static const String login = "LOGIN";
+  static const String submit = "SUBMIT";
   static const String loginMobileNo = "LOGIN WITH MOBILE NO.";
   static const String or = "OR";
   static const String mobileNo = "Mobile Number";
