@@ -1,7 +1,7 @@
 
 class AppRoutes {
   AppRoutes._();
-  static const initial = dashboardScreen;
+  static const initial = login;
   static const login = "/Login";
   static const dashboardScreen = "/dashboardScreen";
   static const loginMobile = "/LoginMobile";

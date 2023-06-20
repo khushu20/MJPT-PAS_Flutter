@@ -2,9 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AppText extends StatelessWidget {
-  const AppText({super.key, required this.textEditingController, required this.labeltext});
+   AppText({super.key, required this.textEditingController, required this.labeltext});
   final TextEditingController textEditingController; 
   final String labeltext;
+  FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -13,6 +14,7 @@ class AppText extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.95,
         child: TextField(
             controller: textEditingController,
+            focusNode: FocusScopeNode(canRequestFocus: false),
             decoration: InputDecoration(
               labelText: labeltext,
               labelStyle:

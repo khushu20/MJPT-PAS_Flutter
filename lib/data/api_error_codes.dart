@@ -1,6 +1,7 @@
 class ApiErrorCodes {
   ApiErrorCodes._();
     static const int SUCCESS_code = 200;
+    static const int success_888 = 888;
      static const int failure_code = 201;
   static const String NoRecords_code="400";
   static const int Session_Expired=600;

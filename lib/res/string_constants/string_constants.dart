@@ -48,10 +48,10 @@ class AppStrings {
   static const String leave_report = "Leave Report";
   static const String grievance_report = "Grievance Report";
   static const String pay_slip = "Pay Slip";
-  // static const String apply_leave = "Apply Leave";
-  // static const String apply_leave = "Apply Leave";
-  // static const String apply_leave = "Apply Leave";
-  // static const String apply_leave = "Apply Leave";
+  static const String leave_type_empty = "Please selcte leave type";
+  static const String time_zone_empty = "Please selcte time zone";
+  static const String from_date_empty = "Please selcte from date";
+  static const String to_date_empty = "Please selcte to date";
   // static const String apply_leave = "Apply Leave";
   // static const String apply_leave = "Apply Leave";
   // static const String apply_leave = "Apply Leave";

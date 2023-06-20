@@ -51,7 +51,7 @@ class ValidateMpinViewModel extends ChangeNotifier {
         
              Navigator.pushNamed(
               context,
-              AppRoutes.dashboardScreen,
+              AppRoutes.ApplyLeave,
             );
         
         

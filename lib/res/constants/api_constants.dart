@@ -20,6 +20,6 @@ class ApiConstants {
   // static const String endpoint_login_mobile = "login";
   static const String endpoint_leave = "Leave";
   static const String endpoint_leave_time_zone = "LeaveTimeZone";
-  // static const String endpoint_login_mobile = "login";
+  static const String endpoint_check_leave_exists = "CheckIfLeaveExits";
   // static const String endpoint_login_mobile = "login";
 }

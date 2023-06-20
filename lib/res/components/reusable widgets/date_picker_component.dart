@@ -82,11 +82,11 @@ class datePickerComponent extends StatelessWidget {
               context: context,
               initialDate: DateTime.now(),
               firstDate: DateTime(1900),
-              lastDate: DateTime.now(),
+              lastDate: DateTime(2050),
             ).then((selectedDate) {
               if (selectedDate != null) {
                 nameController.text =
-                    DateFormat('dd-MM-yyyy').format(selectedDate);
+                    DateFormat('dd/MM/yyyy').format(selectedDate);
               }
             });
           },
