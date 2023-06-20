@@ -51,7 +51,10 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   LeaveData? leaveData;
   List<LeaveTypesData>? leaveTypesData;
   List<LeaveTimeZoneData?>? leaveTimeZoneData;
-  
+  String selectedOption = '';
+  List MCQ = [
+    "Yes", "No"
+  ];
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -80,7 +83,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
 
   @override
   Widget build(BuildContext context) {
-    String selectedOption = '';
+    
     return BaseScaffold(
       resize: false,
       AppBarvis: true,
@@ -273,28 +276,21 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                     height: 10,
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text("Leaving H.Q"),
-                      RadioListTile(
-                        title: const Text('Yes'),
-                        value: 'Yes',
-                        groupValue: selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedOption = value ?? '';
-                          });
-                        },
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            addRadioButton(0, "Yes"),
+                            addRadioButton(1, "No"),
+                          ],
+                        ),
                       ),
-                      RadioListTile(
-                        title: const Text('No'),
-                        value: 'No',
-                        groupValue: selectedOption,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedOption = value ?? '';
-                          });
-                        },
-                      )
                     ],
                   ),
                   AppInputButtonComponent(
@@ -305,6 +301,30 @@ class _ApplyLeaveState extends State<ApplyLeave> {
           ),
         ),
       ),
+    );
+  }
+  Row addRadioButton(int btnValue, String title) {
+    return Row(
+      children: <Widget>[
+        Radio(
+          activeColor: Colors.black,
+          value: MCQ[btnValue],
+          groupValue: selectedOption,
+          onChanged: (value) {
+            setState(() {
+              print(value);
+              selectedOption = value;
+            });
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(
+            title,
+            
+          ),
+        )
+      ],
     );
   }
 
@@ -318,9 +338,9 @@ class _ApplyLeaveState extends State<ApplyLeave> {
     } else if (_formKey2.currentState!.validate()) {
       print("0000000");
       print("555555 ${selectedValueTime?.leaveTimeZoneId ?? ''}");
-    } else if (_formKey3.currentState!.validate()) {
+    } /* else if (_formKey3.currentState!.validate()) {
       print("9999999999");
-    } else {
+    }  */else {
       print("0000000");
     }
   }

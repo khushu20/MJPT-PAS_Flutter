@@ -6,7 +6,7 @@ import 'package:mjpt_pas/view/pay_slip.dart';
 import 'package:mjpt_pas/view/raise_grievance.dart';
 class AppRoutes {
   AppRoutes._();
-  static const initial = ApplyLeave;
+  static const initial = login;
   static const login = "/Login";
   static const loginMobile = "/LoginMobile";
   static const validateMpin = "/ValidateMpin";

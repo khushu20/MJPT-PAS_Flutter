@@ -5,7 +5,7 @@ class ApiConstants {
   /* static const weather_Url = 'http://api.openweathermap.org/data/2.5/weather?';
   static const forecast_Url =
       'http://api.openweathermap.org/data/2.5/forecast?'; */
-  static const String baseUrlHRMS = qaUrl;
+  static const String baseUrlHRMS = demoUrl;
 
   static const String demoUrl =
       "http://demo11.cgg.gov.in/cmnwebservicesmobile/attwsapi/";
