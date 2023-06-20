@@ -15,6 +15,7 @@ class ApiConstants {
   static const String endpoint_login_mobile = "login";
   static const String endpoint_validateMpin = "validatemPin";
   static const String endpoint_getmPin = "getmPin";
+   static const String endpoint_dashboard = "Dashboard";
   // static const String endpoint_login_mobile = "login";
   // static const String endpoint_login_mobile = "login";
   // static const String endpoint_login_mobile = "login";
