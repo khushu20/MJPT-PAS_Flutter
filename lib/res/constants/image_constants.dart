@@ -33,5 +33,6 @@ class AssetPath {
   static const String approved = "assets/approved.svg";
   static const String approval = "assets/approval.svg";
   static const String error = "assets/error.svg";
+   static const String footer_png = "assets/footer.png";
   //static const String save = "assets/save.svg";
 }

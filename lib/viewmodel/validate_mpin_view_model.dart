@@ -10,7 +10,7 @@ import 'package:mjpt_pas/model/validate_mpin_payload.dart';
 import 'package:mjpt_pas/repository/validate_mpin_repository.dart';
 import 'package:mjpt_pas/res/app_alerts/custom_error_alert.dart';
 import 'package:mjpt_pas/res/constants/image_constants.dart';
-import 'package:mjpt_pas/res/routes/App_routes.dart';
+import 'package:mjpt_pas/res/routes/app_routes.dart';
 
 import 'package:mjpt_pas/res/string_constants/string_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,9 +49,9 @@ class ValidateMpinViewModel extends ChangeNotifier {
           EasyLoading.dismiss();
       if (response.statusCode == ApiErrorCodes.SUCCESS_code) {
         
- Navigator.pushNamed(
+             Navigator.pushNamed(
               context,
-              AppRoutes.ApplyLeave,
+              AppRoutes.dashboardScreen,
             );
         
         

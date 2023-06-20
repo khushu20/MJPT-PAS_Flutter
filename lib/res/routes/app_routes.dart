@@ -1,13 +1,9 @@
-import 'package:mjpt_pas/view/apply_leave.dart';
-import 'package:mjpt_pas/view/attendance.dart';
-import 'package:mjpt_pas/view/grievance_report.dart';
-import 'package:mjpt_pas/view/leave_report.dart';
-import 'package:mjpt_pas/view/pay_slip.dart';
-import 'package:mjpt_pas/view/raise_grievance.dart';
+
 class AppRoutes {
   AppRoutes._();
-  static const initial = login;
+  static const initial = dashboardScreen;
   static const login = "/Login";
+  static const dashboardScreen = "/dashboardScreen";
   static const loginMobile = "/LoginMobile";
   static const validateMpin = "/ValidateMpin";
   static const setMpin = "/SetMpin";

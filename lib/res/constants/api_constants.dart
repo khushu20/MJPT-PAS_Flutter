@@ -15,6 +15,9 @@ class ApiConstants {
   static const String endpoint_login_mobile = "login";
   static const String endpoint_validateMpin = "validatemPin";
   static const String endpoint_getmPin = "getmPin";
+   static const String endpoint_dashboard = "Dashboard";
+  // static const String endpoint_login_mobile = "login";
+  // static const String endpoint_login_mobile = "login";
   static const String endpoint_leave = "Leave";
   static const String endpoint_leave_time_zone = "LeaveTimeZone";
   // static const String endpoint_login_mobile = "login";
