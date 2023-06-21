@@ -1,5 +1,9 @@
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mjpt_pas/res/constants/app_constants.dart';
+
 class AlertUploadDocument extends StatefulWidget {
   const AlertUploadDocument({super.key});
 
@@ -12,61 +16,75 @@ class _AlertUploadDocumentState extends State<AlertUploadDocument> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: new EdgeInsets.all(30),
+        width: MediaQuery.of(context).size.width * 0.9,
+        //padding: new EdgeInsets.all(30),
         child: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(0),
           ),
           elevation: 3,
           color: Colors.white,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(child: Text("Upload Document", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),))),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: GestureDetector(
-                        onTap: () async{
-                          final result = await ImagePicker()
-                            .pickImage(source: ImageSource.camera);
-                        if (result == null) return;
-                        /* AppConstants.fileIs = result;
-                        AppConstants.flag = true;
-                        print('files length is ${AppConstants.fileIs.toString()}'); */
-                          print("camera");
-                          //Navigator.popAndPushNamed(context, AppRoutes.AppForPetDogLicense);
-                        },
-                        child: Text("Camera"))),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: GestureDetector(
-                        onTap: () async{
-                           print("Gallery");
-                           final result = await ImagePicker()
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Add Photo!",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                    onTap: () async {
+                      final result = await ImagePicker()
                           .pickImage(source: ImageSource.gallery);
                       if (result == null) return;
-                      /*  AppConstants.fileIs = result;
-                       AppConstants.flag = true;
-                      print('files length is ${ AppConstants.fileIs.toString()}'); */
-                      //Navigator.popAndPushNamed(context, AppRoutes.AppForPetDogLicense);
-                        },
-                        child: Text("Gallery"))),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(child: GestureDetector(
-                        onTap: () {
-                           print("cancel");
-                           /* AppConstants.flag = false; */
-                           Navigator.pop(context);
-                        },
-                        child: Text("cancel"))),
-                    )
+                      AppConstants.selectedImage = result;
+                      setState(() {
+                        AppConstants.docFlag = true;
+                      });
+                      Navigator.pop(context);
+                      print("Choose from Library");
+                    },
+                    child: Text("Choose from Library")),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                    onTap: () async {
+                      print("choose Documents");
+                      FilePickerResult? result =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: [
+                          'pdf',
+                          'doc',
+                          'docx'
+                        ], // Customize allowed extensions as per your requirement
+                      );
+                      if (result != null) {
+                        PlatformFile file = result.files.first;
+                        AppConstants.selectedFile = file.path!; 
+                      } else {
+                        return null; // User canceled the picker
+                      }
+                      AppConstants.docFlag = true;
+                      Navigator.pop(context);
+                    },
+                    child: Text("choose Documents")),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                    onTap: () {
+                      print("cancel");
+                      /* AppConstants.flag = false; */
+                      Navigator.pop(context);
+                    },
+                    child: Text("cancel")),
+              )
             ],
           ),
         ),

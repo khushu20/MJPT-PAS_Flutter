@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mjpt_pas/res/components/base_scaffold.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/alert_upload_document.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_button_component.dart';
@@ -8,6 +11,7 @@ import 'package:mjpt_pas/res/components/reusable%20widgets/app_input_textformfie
 import 'package:mjpt_pas/res/components/reusable%20widgets/app_text.dart';
 import 'package:mjpt_pas/res/components/reusable%20widgets/date_picker_component.dart';
 import 'package:mjpt_pas/res/constants/app_constants.dart';
+import 'package:mjpt_pas/res/constants/image_constants.dart';
 import 'package:mjpt_pas/res/string_constants/string_constants.dart';
 import 'package:mjpt_pas/viewmodel/apply_leave_view_model.dart';
 import 'package:provider/provider.dart';
@@ -79,6 +83,8 @@ class _ApplyLeaveState extends State<ApplyLeave> {
   Widget build(BuildContext context) {
     final applyLeaveViewmodel =
           Provider.of<ApplyLeaveViewModel>(context, listen: false);
+          bool visDoc = !AppConstants.docFlag;
+          print("visdoc $visDoc");
     return BaseScaffold(
       resize: false,
       AppBarvis: true,
@@ -155,6 +161,16 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                     selectedTimeZone = newValue;
                     _fromDate.text = '';
                     _toDate.text = '';
+                    AppConstants.checkIfLeaveExistflag = true;
+                    AppConstants.applyLeaveflag = false;
+                    _purpose.text = '';
+                    _daysCount.text = '';
+                    _mobile.text = '';
+                    AppConstants.selectedFile = "";
+                    AppConstants.selectedImage = XFile("");
+                    selectedOption = '';
+                    visDoc =  true;
+                    AppConstants.docFlag = false;
                     if (newValue?.leaveTimeZoneId == 0) {
                       flag = false;
                       moreThanOneDayFlag = false;
@@ -310,20 +326,37 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.upload_file,
-                          size: 40),
-                          onPressed: () {
-                            showDialog(context: context, builder: (context) {
-                              return AlertUploadDocument();
-                            });
-                          },
+                        Visibility(
+                          visible: visDoc,
+                          child: IconButton(
+                            icon: Icon(Icons.upload_file,
+                            size: 40),
+                            onPressed: () {
+                              showDialog(context: context, builder: (context) {
+                                return AlertUploadDocument();
+                              });
+                            },
+                          ),
+                        ),
+                        Visibility(
+                          visible: AppConstants.docFlag,
+                          child: (AppConstants.selectedFile != null && AppConstants.selectedImage == null) ?
+                           SvgPicture.asset(AssetPath.pdfnew,
+                            height: 50,
+                            width: 50,)
+                            :
+                            Image.file(File(AppConstants.selectedImage != null ? AppConstants.selectedImage!.path.toString() : ''),
+                            height: 50,
+                            width: 50,),
                         )
                       ],
                     ),
                     SizedBox(height: 10,)
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 10,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,16 +366,21 @@ class _ApplyLeaveState extends State<ApplyLeave> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         addRadioButton(0, "Yes"),
+                        SizedBox(width: 50,),
                         addRadioButton(1, "No"),
                       ],
                     ),
                   ),
                 ],
               ),
+              SizedBox(
+                height: 10,
+              ),
+              
               AppInputButtonComponent(
                   onPressed: () {}, buttonText: AppStrings.submit),
                 ],
@@ -370,7 +408,7 @@ class _ApplyLeaveState extends State<ApplyLeave> {
           },
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 8.0),
+          padding: const EdgeInsets.only(left: 0.0),
           child: Text(
             title,
           ),

@@ -1,3 +1,5 @@
+
+
 import 'package:image_picker/image_picker.dart';
 
 class AppConstants {
@@ -6,5 +8,7 @@ class AppConstants {
     
   static bool checkIfLeaveExistflag = true;
   static bool applyLeaveflag = false;
-  //static bool isDialogOpen = false;
+  static String? selectedFile;
+  static XFile? selectedImage;
+  static bool docFlag = false;
 }
